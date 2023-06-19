@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'santri',
+        'passwords' => 'users'
     ],
 
     /*
@@ -36,10 +36,18 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'santri' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'santri',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin'
+        ],
+        'guru' => [
+            'driver' => 'session',
+            'provider' => 'guru'
+        ]
     ],
 
     /*
@@ -60,10 +68,18 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'santri' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Santri::class,
         ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        'guru' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Guru::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',
@@ -92,7 +108,7 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
-        ],
+        ]
     ],
 
     /*
