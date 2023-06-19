@@ -1,0 +1,75 @@
+/*
+* custom.css
+* customan dari ane (@rafikbojes)
+******************************************************************************/
+.nopadding{
+    padding:0px!important;
+    margin:0px!important;
+}
+.dataTables_filter,.dataTables_length{
+    padding: 20px!important;
+}
+.wrapper{
+    display: flex!important;
+    justify-content: space-between;
+    padding:20px;
+}
+.form-group{
+    margin-bottom: 10px;
+}
+.form-group label{
+    font-weight: bold;
+}
+#form-detail .form-group:nth-child(odd){
+    background-color: #f2f2f2;
+}
+.img-thumb{
+    max-width: 150px;
+}
+.custom-file{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 0!important;
+}
+#btn-remove-img{
+    display: inline-block;
+    float:right;
+}
+#facility-file-name-label{
+    word-wrap: break-word!important;
+}
+#btn-remove-img:hover{
+    color:#fff;
+}
+.custom-file.is-invalid{
+    border:1px solid #ff3e1d!important; 
+}
+.sld-up{
+	animation: slideUp .5s ease-in-out;
+}
+@keyframes slideUp{
+	from{
+		opacity: 0;
+		transform: translateY(20px);
+	}to{
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+.sld-down{
+	animation: slideDown .5s ease-in-out;
+}
+@keyframes slideDown{
+	from{
+        opacity: 0;
+		transform: translateY(-20px);
+	}to{
+        opacity: 1;
+		transform: translateY(0);
+	}
+}
+textarea.form-control{
+    resize: none!important;
+}
