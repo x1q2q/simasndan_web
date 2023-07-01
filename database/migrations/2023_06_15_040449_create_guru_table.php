@@ -15,7 +15,7 @@ class CreateGuruTable extends Migration
     {
         Schema::create('guru', function (Blueprint $table) {
             $table->id();
-            $table->string('username',25);
+            $table->string('username',25)->unique();
             $table->string('password',255);
             $table->string('nama_guru',35);
             $table->string('email',35)->unique();

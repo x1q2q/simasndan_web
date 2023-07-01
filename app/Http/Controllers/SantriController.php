@@ -30,14 +30,14 @@ class SantriController extends Controller
                 $query->where('nama_santri', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
                     ->orWhere('username', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
                     ->orWhere('alamat', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%');
-            }})->orderBy('created_at','desc');
+            }})->orderBy('id','desc');
 
         return \DataTables::eloquent($santriLists)->addIndexColumn()->toJson();
     }
     public function insert(Request $request){
         $validator = Validator::make($request->all(), [
-            'username' => 'required|max:15',
-            'password' => 'required|min:5',
+            'username' => 'required|max:25',
+            'password' => 'required|min:3',
             'is_pengurus' => 'required',
             'jenis_kelamin' => 'required',
             'tingkatan' => 'required',
@@ -84,14 +84,14 @@ class SantriController extends Controller
     }
     public function update(Request $request){
         $attrValidate = [
-            'username' => 'required|max:15',
+            'username' => 'required|max:25',
             'is_pengurus' => 'required',
             'jenis_kelamin' => 'required',
             'tingkatan' => 'required',
             'nama_santri' => 'required|max:30',
         ];
         if(!empty($request->password)){
-            $attrValidate['password'] = 'required|min:5';
+            $attrValidate['password'] = 'required|min:3';
         }
         $validator = Validator::make($request->all(), $attrValidate);
         if($validator->fails()){
@@ -129,12 +129,12 @@ class SantriController extends Controller
         if($santri->delete()){
             $result = [
               'status' => 'success',
-              'message' =>  'Data berhasil dihapus'
+              'message' =>  'Data santri berhasil dihapus'
             ];
           }else{
             $result = [
               'status' => 'error',
-              'message' =>  'Data gagal dihapus :('
+              'message' =>  'Data santri gagal dihapus :('
             ];
           }
           return redirect()->back()->with($result['status'], $result['message']);

@@ -15,7 +15,7 @@ class CreateMediaTable extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->enum('type_media',['video','gambar']);
+            $table->enum('type_media',['video','gambar','dokumen']);
             $table->string('ekstensi',10);
             $table->string('path',50);
         });

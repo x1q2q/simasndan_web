@@ -44,7 +44,7 @@ class santriSeeder extends Seeder
             'tgl_lahir'     => '2000-02-10',
             'alamat'        => 'Comal, Pekalongan',
             'foto'          => '-',
-            'is_pengurus'   => 1,
+            'is_pengurus'   => 0,
             'jenis_kelamin' => 'perempuan',
             'status_santri' => 'aktif',
             'universitas'   => 'S1 PBI UIN Surakarta',

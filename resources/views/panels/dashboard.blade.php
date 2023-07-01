@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('extrahead')
-
+    <title>Simasndan Web Apps - Dashboard Page</title>
+    <meta name="description" content="Dashboard Page Sistem Informasi Manajemen Santri Al-Windan" />
 @endsection
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -23,12 +24,11 @@
         <div class="d-flex align-items-end row">
             <div class="col-sm-7">
             <div class="card-body">
-                <h5 class="card-title text-primary">Selamat datang Rizkimmi! 🎉</h5>
+                <h5 class="card-title text-primary">Selamat datang <strong>{{ $nama_lengkap }}</strong>! 🎉</h5>
                 <p class="mb-4">
-                Terdapat <span class="fw-bold">56</span> reservasi yang belum diverifikasi. 
-                Silakan check daftar reservasi di halaman semua reservasi.
+                Terdapat <span class="fw-bold">3</span> jadwal kelas aktif pada hari ini.
                 </p> 
-                <a href="#" class="btn btn-sm btn-outline-primary">Cek Reservasi</a>
+                <a href="#" class="btn btn-sm btn-outline-primary">Cek Jadwal</a>
             </div>
             </div>
             <div class="col-sm-5 text-center text-sm-left">
@@ -50,7 +50,7 @@
                             <img src="{{ asset('assets/img/icons/unicons/chart.png') }}" alt="Credit Card" class="rounded" />
                         </div>
                         </div>
-                        <span class="d-block mb-1">Total Labroom</span>
+                        <span class="d-block mb-1">Total Admin</span>
                         <h3 class="card-title text-nowrap mb-2">12</h3>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                             <img src="{{ asset('assets/img/icons/unicons/cc-primary.png') }}" alt="Credit Card" class="rounded" />
                         </div>                
                     </div>
-                    <span class="fw-semibold d-block mb-1">Total Fasilitas</span>
+                    <span class="fw-semibold d-block mb-1">Total Guru</span>
                     <h3 class="card-title mb-2">12</h3>
                 </div>
                 </div>
@@ -74,11 +74,11 @@
         <div class="card">
         <div class="row row-bordered g-0">
             <div class="col-md-8">
-                <h5 class="card-header m-0 me-2 pb-3">Reservasi (civitas/non-civitas)</h5>
+                <h5 class="card-header m-0 me-2 pb-3">Grafik penambahan data santri</h5>
                 <div id="series-chart" class="px-2"></div>
             </div>
             <div class="col-md-4">
-                <h5 class="card-header m-0 me-2 pb-3">Kategori Labroom</h5>
+                <h5 class="card-header m-0 me-2 pb-3">Tingkatan Kelas</h5>
                 <div id="pie-chart"></div>
             </div>
         </div>
@@ -99,11 +99,11 @@
                     />
                 </div>
                 </div>
-                <span class="fw-semibold d-block mb-1">Total Member</span>
+                <span class="fw-semibold d-block mb-1">Total Santri</span>
                 <h3 class="card-title mb-2">12</h3>
                 <small class="text-success fw-semibold">
-                    (9 activated / 
-                    3 not-activated)  </small>
+                    (69 santri aktif / 
+                    13 santri alumni)  </small>
                 </div>
             </div>
         </div>
@@ -119,11 +119,11 @@
                         />
                     </div>
                     </div>
-                    <span>Total Reservasi</span>
+                    <span>Total Berita</span>
                     <h3 class="card-title text-nowrap mb-2">99</h3>
                     <small class="text-success fw-semibold">
-                        (90 civitas / 
-                        70 non-civitas)
+                        (3 Pengumuman / 
+                        2 Artikel / 4 Jadwal)
                     </small>
                 </div>
             </div>

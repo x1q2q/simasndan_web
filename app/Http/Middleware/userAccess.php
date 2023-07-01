@@ -21,7 +21,7 @@ class userAccess
            if(Auth::guard('admin')->user() && Auth::guard('admin')->user()->is_pengasuh == '0'){
                return $next($request);
            }
-           return redirect('/login');
+           return redirect('/restricted/admin');
         }
        if ($userType == 'pengasuh') {
             if(Auth::guard('admin')->user() && Auth::guard('admin')->user()->is_pengasuh == '1'){
