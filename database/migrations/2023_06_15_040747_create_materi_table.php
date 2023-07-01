@@ -18,7 +18,7 @@ class CreateMateriTable extends Migration
             $table->string('kode_materi',15);
             $table->string('nama_materi',35);
             $table->string('foto',50)->nullable();
-            $table->string('link_materi',25);
+            $table->string('link_materi',255);
             $table->text('deskripsi');
         });
     }

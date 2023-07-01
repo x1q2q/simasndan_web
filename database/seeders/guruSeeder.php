@@ -21,6 +21,7 @@ class guruSeeder extends Seeder
             'nama_guru'     => 'Ki Hajar Dewantara',
             'email'         => 'kihajar@gmail.com',
             'nomor_hp'      => '0899901878490',
+            'tgl_lahir'     =>  '1945-10-10',
             'tempat_lahir'  => 'Kudus',
             'alamat'        => 'Pabelan, Sukoarjo',
             'foto'          => '-',

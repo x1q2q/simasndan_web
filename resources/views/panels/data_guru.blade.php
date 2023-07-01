@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('extrahead')
-    <title>Simasndan Web Apps - Data Santri Page</title>
+    <title>Simasndan Web Apps - Data Guru Page</title>
     <meta name="description" content="Dashboard Page Sistem Informasi Manajemen Santri Al-Windan" />
     <meta name="_token" content="{{csrf_token()}}" />
 @endsection
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">umum /</span> Data Santri </h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">umum /</span> Data guru </h4>
     <div class="bs-toast toast toast-placement-ex top-0 end-0 m-3 sld-down"
         role="alert"
         aria-live="assertive"
@@ -26,28 +26,19 @@
         <div class="col-auto">
             <button type="button" class="btn btn-dark rounded-3" onclick="addData()"
                 data-bs-toggle="modal" data-bs-target="#modal-save">
-                Tambah Santri <i class="bx bx-sm bxs-plus-circle"></i>
+                Tambah Guru <i class="bx bx-sm bxs-plus-circle"></i>
             </button>
         </div>
     </div>
     <form class="nopadding" action="" method="post" enctype="multipart/form-data" onsubmit="return false;">
         @csrf
         <div class="row p-2 bg-light m-0">
-            <div class="col-9">
+            <div class="col-12">
                 <div class="input-group input-group-merge">
                     <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
                     <input type="text" class="form-control" id="s_keyword" 
                     name="s_keyword" placeholder="Cari di sini ..." aria-label="Search..." aria-describedby="basic-addon-search31">
                 </div>
-            </div>   
-            <div class="col-3">
-                <select class="form-control form-select" 
-                id="s_status" name="s_status">
-                    <option value="all">-- semua tingkatan --</option>
-                    <option value="ula">Ula</option>
-                    <option value="ulya">Ulya</option>
-                    <option value="wustho">Wustho</option>
-                </select>
             </div>
         </div>
       
@@ -58,14 +49,13 @@
         </div>
     </form>
     <div class="table-responsive text-wrap">
-        <table class="table table-striped table-responsive" id="datatable-santri">
+        <table class="table table-striped table-responsive" id="datatable-guru">
         <thead>
             <tr>
             <th>No.</th>
-            <th style="width: 20%;">Nama Santri</th>
-            <th style="width: 15%;">Jenis Kelamin</th>
-            <th style="width: 15%;">Tingkatan</th>
-            <th style="width: 15%;">Status</th>
+            <th style="width: 15%;">Username</th>
+            <th style="width: 20%;">Nama guru</th>
+            <th style="width: 15%;">Email</th>
             <th>Alamat</th>
             <th style="width: 20%;">Aksi</th>
             </tr>
@@ -100,15 +90,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="nama_santri" class="col-sm-4">Nama Santri</label>
+                    <label for="nama_guru" class="col-sm-4">Nama Guru</label>
                     <div class="col-sm-8">
-                        <span id="nama_santri"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="jenis_kelamin" class="col-sm-4">Jenis Kelamin</label>
-                    <div class="col-sm-8">
-                        <span id="jenis_kelamin"></span>
+                        <span id="nama_guru"></span>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -130,30 +114,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="tingkatan" class="col-sm-4">Tingkatan</label>
-                    <div class="col-sm-8">
-                        <span id="tingkatan"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="status_santri" class="col-sm-4">Status Keaktifan</label>
-                    <div class="col-sm-8">
-                        <span id="status_santri"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="is_pengurus" class="col-sm-4">Status Pengurus</label>
-                    <div class="col-sm-8">
-                        <span id="is_pengurus"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="universitas" class="col-sm-4">Universitas</label>
-                    <div class="col-sm-8">
-                        <span id="universitas"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="alamat" class="col-sm-4">Alamat</label>
                     <div class="col-sm-8">
                         <span id="alamat"></span>
@@ -172,6 +132,7 @@
     </div>
 </div>
 
+
 @include('layouts.modal_delete')
 
 <!-- modal save -->
@@ -180,7 +141,7 @@
     <form action="" method="POST" id="form-save" class="modal-content" 
         tipe="" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" id="id_santri" name="id_santri"/>
+        <input type="hidden" id="id_guru" name="id_guru"/>
             <div class="modal-header border-bottom">
                 <h5 class="modal-title"></h5>
                 <button
@@ -192,14 +153,12 @@
             </div>
             <div class="modal-body p-4 pb-0">
                 <div class="row">
-                    <div class="col-12 mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" name="username" id="username" 
-                    placeholder="Masukkan username santri"/>
+                    <div class="col-6 mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" id="username" 
+                        placeholder="Masukkan username guru"/>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 mb-3 form-password-toggle">
+                    <div class="col-6 mb-3 form-password-toggle">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group input-group-merge">
                             <input type="password" id="password" class="form-control" name="password" placeholder="" aria-describedby="password" />
@@ -209,58 +168,56 @@
                 </div>
                 <div class="row">
                     <div class="col-12 mb-3">
-                    <label for="nama_santri" class="form-label">Nama Santri</label>
-                    <input type="text" class="form-control" name="nama_santri" id="nama_santri" 
-                    placeholder="Masukkan nama santri"/>
+                    <label for="nama_guru" class="form-label">Nama guru</label>
+                    <input type="text" class="form-control" name="nama_guru" id="nama_guru" 
+                    placeholder="Masukkan nama guru"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6 mb-3">
-                        <label for="is_pengurus" class="form-label">Status Pengurus</label>
-                        <select class="form-control form-select" 
-                            id="is_pengurus" name="is_pengurus" style="width: 100%;">
-                            <option value="0">Bukan pengurus</option>
-                            <option value="1">Pengurus</option>
-                        </select>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" name="email" id="email" 
+                        placeholder="Masukkan Email"/>
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="status_santri" class="form-label">Status Keaktifan</label>
-                        <select class="form-control form-select" 
-                            id="status_santri" name="status_santri" style="width: 100%;">
-                            <option value="aktif">Aktif</option>
-                            <option value="alumni">Alumni</option>
-                        </select>
-                    </div>
+                        <label for="nomor_hp" class="form-label">Nomor HP</label>
+                        <input type="text" class="form-control" name="nomor_hp" id="nomor_hp" 
+                        placeholder="Masukkan No. HP"/>
+                        </div>
                 </div>
                 <div class="row">
                     <div class="col-6 mb-3">
-                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                        <select class="form-control form-select" 
-                            id="jenis_kelamin" name="jenis_kelamin" style="width: 100%;">
-                            <option value="">-- pilih jenis kelamin --</option>
-                            <option value="laki-laki">Laki-laki</option>
-                            <option value="perempuan">Perempuan</option>
-                        </select>
+                        <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                        <input type="text" class="form-control" name="tempat_lahir" id="tempat_lahir" 
+                        placeholder="Masukkan tempat lahir"/>
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="tingkatan" class="form-label">Tingkatan</label>
-                        <select class="form-control form-select" 
-                            id="tingkatan" name="tingkatan" style="width: 100%;">
-                            <option value="">-- pilih tingkatan --</option>
-                            <option value="ula">Ula</option>
-                            <option value="ulya">Ulya</option>
-                            <option value="wustho">Wustho</option>
-                        </select>
+                        <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
+                        <input type="date" class="form-control" name="tgl_lahir" id="tgl_lahir" 
+                        placeholder="Masukkan tanggal lahir"/>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="foto" class="form-label">Foto</label>
+                        <div class="custom-file border-bottom p-2" id="foto">
+                            <input type="file" name="foto" hidden class="form-control" accept=".png,.jpg,.jpeg" id="foto-file">
+                            <input type="text" name="foto_file_name" value="" class="form-control" hidden id="foto-file-name" >
+                            <label class="btn-secondary btn" for="foto-file" style="padding: 4px 10px">
+                            <span class="tf-icons bx bxs-image-add"></span>
+                                Pilih </label>
+                            <label id="foto-file-name-label" for="foto-file">Tidak ada gambar yang dipilih</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="alamat" class="form-label">Alamat</label>
+                        <textarea class="form-control" rows="3" 
+                        placeholder="Masukkan alamat" name="alamat" id="alamat"></textarea>
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-12 mb-3">
-                    <label for="alamat" class="form-label">Alamat</label>
-                    <textarea class="form-control" rows="3" 
-                    placeholder="Masukkan alamat" name="alamat" id="alamat"></textarea>
-                    </div>
-                </div>
             <div class="modal-footer py-4 px-0">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
@@ -294,8 +251,9 @@
         </script>
     @endif
 <script type="text/javascript">
+    var urlPhoto = "{{ asset('assets/img/uploads/guru') }}";
     $(document).ready(function(){
-        var dtableSantri = $('#datatable-santri').DataTable({
+        var dtableGuru = $('#datatable-guru').DataTable({
             "searching": false,
             "autoWidth":false,
             "lengthChange": true,
@@ -318,22 +276,17 @@
                     'orderable': false,
                 },
                 {
-                    'data': 'nama_santri',
+                    'data': 'username',
                     'className': "text-center",
                     'orderable': false,
                 },
                 {
-                    'data': 'jenis_kelamin',
+                    'data': 'nama_guru',
                     'className': "text-center",
                     'orderable': false,
                 },
                 {
-                    'data': 'tingkatan',
-                    'className': "text-center",
-                    'orderable': false,
-                },
-                {
-                    'data': 'status_santri',
+                    'data': 'email',
                     'className': "text-center",
                     'orderable': false,
                 },
@@ -341,7 +294,7 @@
                     'data': 'alamat',
                     'className': "text-center",
                     'orderable': false,
-                },              
+                },             
                 {
                     'data': 'id', 
                     'className':"text-center",
@@ -367,35 +320,60 @@
             columnDefs: [
             ],
             "ajax": {
-                "url": "{{route('santri.lists')}}",
+                "url": "{{route('guru.lists')}}",
                 "type": "POST",
                 'data': function(data) {
                     data.s_keyword = $('#s_keyword').val();
-                    data.s_status = $('#s_status option:selected').val()
 
                     data._token =  "{{ csrf_token() }}";
                 }
             }
         });
 
-        dtableSantri.on( 'draw', function () {
-            var total_records = dtableSantri.rows().count();
-            var page_length = dtableSantri.page.info().length;
+        dtableGuru.on( 'draw', function () {
+            var total_records = dtableGuru.rows().count();
+            var page_length = dtableGuru.page.info().length;
             var total_pages = Math.ceil(total_records / page_length);
-            var current_page = dtableSantri.page.info().page+1;
+            var current_page = dtableGuru.page.info().page+1;
         });
 
         $('#s_keyword').keyup(function() {
-            dtableSantri.draw();
-        });
-
-        $('#s_status').on('change', function() {
-            dtableSantri.draw();
+            dtableGuru.draw();
         });
 
         $("#modal-save").on('hidden.bs.modal', function (e) {
             $('#form-save').trigger('reset');
             resetValidationError();
+        });
+
+        $('#foto-file').on('change', function (e) {
+          let file = $('#foto-file')[0].files[0]
+          let ukuran = file.size;
+          let name = file.name;
+          let type = file.type;
+          var allowtypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+          if (e.target.files.length > 0) {
+            if(jQuery.inArray(type, allowtypes) >= 0 && ukuran <= 2000000){
+                let newName = (name.length > 40) ? name.substr(-30):name;
+                $('#foto-file-name').val('gr-'+newName);	
+                $('#foto-file-name-label').html('gr-'+newName);
+                if($('#btn-remove-img').length <= 0){
+                    let btnRemoveImg = `<a id="btn-remove-img" onclick="removeImg(this)" 
+                        class="btn btn-sm btn-outline-secondary btn-icon"> <span class="tf-icons bx bx-trash"></span></a>`;
+                    $('#foto-file').parent().append(btnRemoveImg);
+                }
+            }else{
+                if(jQuery.inArray(type, allowtypes) < 0) {
+                    showToast('warning','Peringatan','Tipe file tidak diijinkan!','#toast-alert');
+                }else if(ukuran > 2000000){
+                    showToast('warning','Peringatan','File tidak boleh lebih dari 2MB','#toast-alert');
+                }
+                $('#foto-file-name-label').html("Tidak ada gambar yang dipilih");
+                $('#foto-file').val('');
+                removeImg('#btn-remove-img');
+            }
+          }
         });
 
         $.ajaxSetup({
@@ -406,15 +384,14 @@
 
         $('#form-save').submit(function(e){
                 e.preventDefault();
-                let siteUrl = "{{ route('santri') }}";
+                let siteUrl = "{{ route('guru') }}";
                 let formData = new FormData(this);
-                let idSantri = $('#form-save').find('#id_santri').val();
+                let idguru = $('#form-save').find('#id_guru').val();
                 let urlPost =  ($(this).attr('tipe') == 'add') ? 
                     `${siteUrl}/insert`: `${siteUrl}/update`;
 
-                formData.append('id',idSantri)
+                formData.append('id',idguru)
                 resetValidationError(); // agar bisa mengambil kondisi field terbaru
-                console.log(urlPost);
                 $.ajax({
                     type: $(this).attr('method'),
                     url: urlPost,
@@ -427,7 +404,7 @@
                         var data = resp.data;
                         if(parseInt(resp.status) == 200){
                             $('#modal-save').modal('hide');
-                            dtableSantri.draw();
+                            dtableGuru.draw();
                             showToast('success','Sukses',resp.message,'#toast-alert');
                         }else{
                             for(const val in data){
@@ -448,62 +425,31 @@
             });
     });
   
-    
+    function removeImg(img){
+        $('#foto-file-name-label').html("Tidak ada gambar yang dipilih");
+        $('#foto-file').val('');
+        $('#foto-file-name').val('');
+        $(img).remove();
+    }
+
     function addData(){
         $('#form-save .modal-title').text("Tambah Data");
         $('#form-save').attr('tipe','add');
     }
-    function editData(id){
-            $('#form-save .modal-title').text("Edit Data");
-            $('#form-save').attr('tipe','edit');
-            let urlEdit = "{{ route('santri.detail',':id')}}";
-            $.ajax({
-                type:'GET',
-                url: urlEdit.replace(':id',id),
-                success:function(response){
-                    var resp = JSON.parse(response);
-                    var data = resp.santri;
-                    $('#form-save').find('#id_santri').val(data.id);
-                    $('#form-save').find('input#username').val(data.username);
-                    $('#form-save').find('input#password').val('');
-                    $('#form-save').find('select#is_pengurus').val(data.is_pengurus);
-                    $('#form-save').find('select#status_santri').val(data.status_santri);
-                    $('#form-save').find('input#nama_santri').val(data.nama_santri);
-                    $('#form-save').find('select#jenis_kelamin').val(data.jenis_kelamin);
-                    $('#form-save').find('select#tingkatan').val(data.tingkatan);
-                    $('#form-save').find('textarea#alamat').val(data.alamat);
-
-                    const inputTag = 'form#form-save #password';
-                    $(inputTag).addClass('is-invalid');
-                    if(!$(inputTag).parent().find('.invalid-feedback').length){
-                        $(inputTag).parent().append(
-                            `<div class="invalid-feedback text-secondary"> kosongkan jika tidak ingin mengupdate password!</div>`);
-                        }
-
-                    $('#modal-save').modal('show');
-                }
-            });
-        }
     function detailData(id){
-        let urlDetail = "{{ route('santri.detail',':id')}}";
-        let urlPhoto = "{{ asset('assets/img/uploads/santri') }}";
+        let urlDetail = "{{ route('guru.detail',':id')}}";
+        let urlPhoto = "{{ asset('assets/img/uploads/guru') }}";
         $.ajax({
             type:'GET',
             url: urlDetail.replace(':id',id),
             success:function(response){
                 var resp = JSON.parse(response);
-                var data = resp.santri;
-                var sttsPengurus = (data.is_pengurus == 1) ? 'Pengurus' : 'Bukan Pengurus';
+                var data = resp.guru;
                 $('#form-detail').find('span#username').text('@'+data.username);
-                $('#form-detail').find('span#nama_santri').text(data.nama_santri);
+                $('#form-detail').find('span#nama_guru').text(data.nama_guru);
                 $('#form-detail').find('span#email').text(data.email);
                 $('#form-detail').find('span#nomor_hp').text(data.nomor_hp);
                 $('#form-detail').find('span#ttl').text(data.tempat_lahir + ', ' + data.tgl_lahir);
-                $('#form-detail').find('span#jenis_kelamin').text(data.jenis_kelamin);
-                $('#form-detail').find('span#tingkatan').text(data.tingkatan);
-                $('#form-detail').find('span#is_pengurus').text(sttsPengurus);
-                $('#form-detail').find('span#status_santri').text(data.status_santri);
-                $('#form-detail').find('span#universitas').text(data.universitas);
                 $('#form-detail').find('span#alamat').text(data.alamat);
                 if(isNotEmptyValue(data.foto)){
                     $('#form-detail').find('#foto').html(
@@ -515,8 +461,45 @@
             }
         });
     }
+    function editData(id){
+            $('#form-save .modal-title').text("Edit Data");
+            $('#form-save').attr('tipe','edit');
+            let urlEdit = "{{ route('guru.detail',':id')}}";
+            $.ajax({
+                type:'GET',
+                url: urlEdit.replace(':id',id),
+                success:function(response){
+                    var resp = JSON.parse(response);
+                    var data = resp.guru;
+                    $('#form-save').find('#id_guru').val(data.id);
+                    $('#form-save').find('input#username').val(data.username);
+                    $('#form-save').find('input#password').val('');
+                    $('#form-save').find('input#nama_guru').val(data.nama_guru);
+                    $('#form-save').find('input#email').val(data.email);
+                    $('#form-save').find('input#nomor_hp').val(data.nomor_hp);
+                    $('#form-save').find('input#tempat_lahir').val(data.tempat_lahir);
+                    $('#form-save').find('input#tgl_lahir').val(data.tgl_lahir);
+                    $('#form-save').find('textarea#alamat').val(data.alamat);
+
+                    if(isNotEmptyValue(data.foto)){
+                        $('#form-save').find('input[name="foto_file_name"]').val(data.foto);
+                        $('#form-save').find('#foto-file-name-label').text(data.foto);
+                    }
+
+                    const inputTag = 'form#form-save #password';
+                    $(inputTag).addClass('is-invalid');
+                    if(!$(inputTag).parent().find('.invalid-feedback').length){
+                        $(inputTag).parent().append(
+                        `<div class="invalid-feedback text-secondary"> kosongkan jika tidak ingin mengupdate password!</div>`);
+                    }
+
+                    $('#modal-save').modal('show');
+                }
+            });
+        }
+    
     function hapusData(id){
-        let urlDelete = "{{ route('santri.delete',':id')}}";
+        let urlDelete = "{{ route('guru.delete',':id')}}";
         $("#confirm-delete").modal('show');
         $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
     }

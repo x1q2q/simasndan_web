@@ -38,7 +38,7 @@
                     </div>
                     <div class="flex-grow-1">
                     <span class="fw-semibold d-block">{{ $nama }}</span>
-                    <small class="text-muted">Admin</small>
+                    <small class="text-muted">{{ $role }}</small>
                     </div>
                 </div>
                 </a>
@@ -50,7 +50,7 @@
                 <form action="/logout" method="POST">
                     @csrf
                     <button class="dropdown-item" type="submit">
-                        <i class="bx bx-power-off me-2"></i>
+                        <i class="bx bx-log-out me-2"></i>
                         <span class="align-middle">Log Out</span>
                     </button>
                 </form>

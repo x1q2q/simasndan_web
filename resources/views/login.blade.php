@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 @section('extrahead')
-    <title>Simasndan Apps - Login Page</title>
+    <title>Simasndan Web Apps - Login Page</title>
     <meta name="description" content="Login Page Sistem Informasi Manajemen Santri Al-Windan" />
 @endsection
 @section('content')
@@ -25,7 +25,8 @@
         
         <div class="authentication-inner">
             <div class="text-center my-3 p-3">
-                <img src="{{ asset('assets/img/illustrations/man-with-laptop-light.png') }}" alt="Logo Pondok Pesantren Almuayyad Windan" width="50%" height="50%">
+                <img class="img-fluid" src="{{ asset('assets/img/uploads/logo_pondok.png') }}" 
+                    alt="Logo Pondok Pesantren Almuayyad Windan" width="50%" height="50%">
             </div>
             <div class="card">
                 <div class="card-header p-3 bg-primary text-center">
@@ -59,9 +60,13 @@
                                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <a href="">Forgot password?</a>
-                            <input class="form-checkbox" type="checkbox" name="remember" id="remember"/>
+                        <div class="form-group row">
+                            <div class="col">
+                                <b>Forgot password?</b>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#">kontak admin</a>
+                            </div>
                         </div><!-- form-group -->
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary w-100" type="submit">

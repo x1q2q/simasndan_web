@@ -4,8 +4,8 @@ function formatRupiah(bilangan) {
       ribuan	= ribuan.join('.').split('').reverse().join('');
     return "Rp"+ ribuan;
 }
-const checkIsNotEmptyNullValue = (str) => {
-  return (str == "" || str == null)? 0:1;
+const isNotEmptyValue = (str) => {
+  return (str == "" || str == null) ? 0:1;
 }
 function showToast(tipe, title, msg, elem){ // customize dewe
   resetToast(elem,tipe);

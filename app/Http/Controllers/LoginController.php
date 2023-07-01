@@ -19,8 +19,12 @@ class LoginController extends Controller
         $table = $sel_role == 1 ? 'santri' : ($sel_role == 3 || $sel_role == 4 ? 'admin' : 'guru');
  
         if (Auth::guard($table)->attempt($credentials)) {
-            if($table == 'santri' & Auth::guard('santri')->user()->is_pengurus == 0){
-                return redirect()->back()->with('error', 'login gagal. anda tidak memiliki wewenang sebagai pengurus!');
+            if($table == 'santri'){
+                if(Auth::guard('santri')->user()->is_pengurus == 0){
+                    return redirect()->back()->with('error', 'login gagal. anda tidak memiliki wewenang sebagai pengurus!');
+                }else if(Auth::guard('santri')->user()->status_santri == 'alumni'){
+                    return redirect()->back()->with('error', 'login gagal. anda sudah berstatus sebagai alumni!');
+                }
             }
             $request->session()->regenerate();
             $request->session()->put('table', $table);
