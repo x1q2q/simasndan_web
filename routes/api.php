@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\api\ApiSantriController;
+use App\Http\Controllers\api\ApiMateriController;
+use App\Http\Controllers\api\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,4 +20,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found. Mohon maaf :)'], 404);
+});
+
+Route::group(['middleware' => 'cors'], function(){
+    Route::post('login',[AuthController::class,'login']);
+    Route::apiResource('santri', ApiSantriController::class);
+    Route::apiResource('materi', ApiMateriController::class);
 });

@@ -65,5 +65,4 @@ Route::middleware(['is-auth'])->group(function () {
 
 Route::middleware(['user-access:admin'])->group(function () { // only admin can use this
     Route::delete('/data-santri/delete/{id}',[SantriController::class, 'delete'])->name('santri.delete');
-
 });
