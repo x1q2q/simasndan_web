@@ -13,4 +13,8 @@ class Santri extends Authenticatable
     protected $table = 'santri';
     protected $guarded = ['id'];
     public $timestamps = false;
+
+    public function kelas(){
+        return $this->hasMany(Kelas::class);
+    }
 }

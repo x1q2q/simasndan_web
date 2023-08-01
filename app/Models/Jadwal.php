@@ -10,4 +10,5 @@ class Jadwal extends Model
     use HasFactory;
     protected $table = 'jadwal';
     protected $guarded = ['id'];
+    public $timestamps = false;
 }

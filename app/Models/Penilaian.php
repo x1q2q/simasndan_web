@@ -10,4 +10,5 @@ class Penilaian extends Model
     use HasFactory;
     protected $table = 'penilaian';
     protected $guarded = ['id'];
+    public $timestamps = false;
 }

@@ -19,6 +19,9 @@ class CreateJadwalTable extends Migration
             $table->string('kode_kelas',15);
             $table->dateTime('waktu_mulai');
             $table->timestamp('created_at');
+            $table->enum('sistem_penilaian',['kehadiran','nilai']);
+            $table->unsignedBigInteger('materi_id');
+            $table->foreign('materi_id')->references('id')->on('materi')->onDelete('cascade');
         });
     }
 

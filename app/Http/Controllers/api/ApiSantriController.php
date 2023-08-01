@@ -7,7 +7,8 @@ use App\Http\Resources\SantriResource;
 use App\Http\Resources\SantriCollection;
 use App\Models\Santri;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ApiSantriController extends Controller
 {
@@ -56,6 +57,11 @@ class ApiSantriController extends Controller
     public function update(Request $request, $id)
     {
         $santri = Santri::findOrFail($id);
+
+        $hasFile = $request->hasFile('image');
+        $file    = $request->image;
+        $uname   = $request->username;
+        $fotoName = $this->uploadFile($hasFile,$file,$uname);
         $santri->update([
             'nama_santri'   => $request->nama_santri,
             'tempat_lahir'  => $request->tempat_lahir,
@@ -63,11 +69,30 @@ class ApiSantriController extends Controller
             'universitas'   => $request->universitas,
             'alamat'        => $request->alamat,
             'id'            => $request->id,
-            'foto'          => $request->foto
+            'foto'          => $fotoName
         ]);
         return response()->json(["data" => [
             "success" => true,
-            "request" => $santri
+            "request" => $request->all(),
         ]]);
+    }
+    public function uploadFile($hasFile, $file, $uname){
+        $fotoName = '-';
+        if ($hasFile) {
+            $dir = '/assets/img/uploads/santri/';
+            $content_directory = public_path($dir);
+            if(!File::exists($content_directory)) {
+                File::makeDirectory($content_directory, $mode = 0777, true, true);
+            }
+
+            $foto = $file;
+            $slug = str_replace(' ', '-', strtolower($uname));
+            $fotoName = "santri_".$slug."_".time().$foto->getClientOriginalExtension();
+            $foto->move($content_directory, $fotoName);
+
+        }else {
+          $fotoName = NULL;
+        }
+        return $fotoName;
     }
 }

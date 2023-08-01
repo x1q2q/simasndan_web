@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\api\ApiSantriController;
 use App\Http\Controllers\api\ApiMateriController;
+use App\Http\Controllers\api\ApiBeritaController;
 use App\Http\Controllers\api\AuthController;
 
 /*
@@ -30,4 +31,6 @@ Route::group(['middleware' => 'cors'], function(){
     Route::post('login',[AuthController::class,'login']);
     Route::apiResource('santri', ApiSantriController::class);
     Route::apiResource('materi', ApiMateriController::class);
+    Route::apiResource('berita', ApiBeritaController::class);
+    Route::get('berita/filter/{any}',[ApiBeritaController::class, 'filter']);
 });

@@ -5,9 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Berita extends Model
 {
     use HasFactory;
     protected $table = 'berita';
     protected $guarded = ['id'];
+    public $timestamps = false;
+
+    public function media(){
+        return $this->hasOne(Media::class);
+    }
 }
