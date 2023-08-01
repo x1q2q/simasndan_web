@@ -17,11 +17,9 @@ class CreateBeritaTable extends Migration
             $table->id();
             $table->string('judul_berita',35);
             $table->enum('kategori_berita',['artikel','pengumuman','jadwal']);
-            $table->text('isi_berita');
-            $table->unsignedBigInteger('media_id');
+            $table->text('isi_berita');            
             $table->enum('penulis',['admin','pengurus','pengasuh']);
             $table->timestamp('created_at');
-            $table->foreign('media_id')->references('id')->on('media')->onDelete('cascade');
         });
     }
 

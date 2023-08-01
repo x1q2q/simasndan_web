@@ -7,7 +7,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\PenilaianController;
 use App\Http\Middleware\Authenticate;
+use App\Models\Penilaian;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +29,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
-
 Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::post('/login',[LoginController::class,'authenticate'])->name('loginAuth');
 Route::post('/logout',[LoginController::class,'logout'])->name('logout');
@@ -61,6 +65,43 @@ Route::middleware(['is-auth'])->group(function () {
     Route::delete('/data-materi/delete/{id}',[MateriController::class, 'delete'])->name('materi.delete');
 
     Route::get('/data-berita',[BeritaController::class, 'index'])->name('berita');
+    Route::post('/data-berita/lists',[BeritaController::class, 'lists'])->name('berita.lists');
+    Route::get('/data-berita/detail/{id}',[BeritaController::class, 'detail'])->name('berita.detail');
+    Route::post('/data-berita/insert',[BeritaController::class, 'insert'])->name('berita.insert');
+    Route::post('/data-berita/update',[BeritaController::class, 'update'])->name('berita.update');
+    Route::delete('/data-berita/delete/{id}',[BeritaController::class, 'delete'])->name('berita.delete');
+    
+    Route::get('/data-semester',[SemesterController::class,'index'])->name('semester');
+    Route::post('/data-semester/lists',[SemesterController::class, 'lists'])->name('semester.lists');
+    Route::get('/data-semester/detail/{id}',[SemesterController::class, 'detail'])->name('semester.detail');
+    Route::post('/data-semester/insert',[SemesterController::class, 'insert'])->name('semester.insert');
+    Route::post('/data-semester/update',[SemesterController::class, 'update'])->name('semester.update');
+    Route::delete('/data-semester/delete/{id}',[SemesterController::class, 'delete'])->name('semester.delete');
+
+    Route::get('/data-jadwal',[JadwalController::class,'index'])->name('jadwal');
+    Route::post('/data-jadwal/lists',[JadwalController::class, 'lists'])->name('jadwal.lists');
+    Route::get('/data-jadwal/detail/{id}',[JadwalController::class, 'detail'])->name('jadwal.detail');
+    Route::post('/data-jadwal/insert',[JadwalController::class, 'insert'])->name('jadwal.insert');
+    Route::post('/data-jadwal/update',[JadwalController::class, 'update'])->name('jadwal.update');
+    Route::delete('/data-jadwal/delete/{id}',[JadwalController::class, 'delete'])->name('jadwal.delete');
+    Route::get('/data-jadwal/getkelas',[JadwalController::class,'getKelasData'])->name('kelas.getkelas');
+    Route::get('/data-jadwal/getmateri',[JadwalController::class,'getMateriData'])->name('kelas.getmateri');
+
+    Route::get('/data-kelas',[KelasController::class,'index'])->name('kelas');
+    Route::post('/data-kelas/lists',[KelasController::class, 'lists'])->name('kelas.lists');
+    Route::get('/data-kelas/detail/{id}',[KelasController::class, 'detail'])->name('kelas.detail');
+    Route::post('/data-kelas/insert',[KelasController::class, 'insert'])->name('kelas.insert');
+    Route::post('/data-kelas/update',[KelasController::class, 'update'])->name('kelas.update');
+    Route::delete('/data-kelas/delete/{id}',[KelasController::class, 'delete'])->name('kelas.delete');
+    Route::get('/data-kelas/getsantri',[KelasController::class,'getSantriData'])->name('kelas.getsantri');
+
+    Route::get('/data-penilaian',[PenilaianController::class,'index'])->name('penilaian');
+    Route::post('/data-penilaian/lists',[PenilaianController::class, 'lists'])->name('penilaian.lists');
+    Route::get('/data-penilaian/detail/{id}',[PenilaianController::class, 'detail'])->name('penilaian.detail');
+    Route::post('/data-penilaian/insert',[PenilaianController::class, 'insert'])->name('penilaian.insert');
+    Route::post('/data-penilaian/update',[PenilaianController::class, 'update'])->name('penilaian.update');
+    Route::delete('/data-penilaian/delete/{id}',[PenilaianController::class, 'delete'])->name('penilaian.delete');
+    
 });
 
 Route::middleware(['user-access:admin'])->group(function () { // only admin can use this

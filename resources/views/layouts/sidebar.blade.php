@@ -38,7 +38,7 @@
           <div data-i18n="Basic">Data Admin</div>
         </a>
       </li>
-      <li class="menu-item">
+      <li class="menu-item {{ (request()->is('data-berita')) ? 'active' : '' }}">
         <a href="{{ route('berita') }}" class="menu-link">
           <i class="menu-icon tf-icons bx bxs-news"></i>
           <div data-i18n="Basic">Data Berita</div>
@@ -54,6 +54,33 @@
         <a href="{{ route('guru') }}" class="menu-link">
           <i class="menu-icon tf-icons bx bxs-group"></i>
           <div data-i18n="Basic">Data Guru</div>
+        </a>
+      </li>
+      <li class="menu-item {{ (request()->is('data-semester')) ? 'active' : '' }}">
+        <a href="{{ route('semester') }}" class="menu-link">
+          <i class='menu-icon tf-icons bx bx-align-justify' ></i>
+          <div data-i18n="Basic">Data Semester</div>
+        </a>
+      </li>
+      <li class="menu-header small text-uppercase">
+        <span class="menu-header-text">Absensi</span>
+      </li>
+      <li class="menu-item {{ (request()->is('data-jadwal')) ? 'active' : '' }}">
+        <a href="{{ route('jadwal') }}" class="menu-link">
+          <i class="menu-icon tf-icons bx bxs-chalkboard"></i>
+          <div data-i18n="Basic">Data Jadwal</div>
+        </a>
+      </li>
+      <li class="menu-item {{ (request()->is('data-kelas')) ? 'active' : '' }}">
+        <a href="{{ route('kelas') }}" class="menu-link">
+          <i class="menu-icon tf-icons bx bx-grid"></i>          
+          <div data-i18n="Basic">Data Kelas</div>
+        </a>
+      </li>
+      <li class="menu-item {{ (request()->is('data-penilaian')) ? 'active' : '' }}">
+        <a href="{{ route('penilaian') }}" class="menu-link">
+          <i class="menu-icon tf-icons bx bxs-food-menu"></i>
+          <div data-i18n="Basic">Data Penilaian</div>
         </a>
       </li>
 

@@ -68,7 +68,7 @@ class MateriController extends Controller
         return response()->json($result);
     }
     public function detail($id){
-        $data['materi'] = Materi::where('id', '=', $id)->first();;
+        $data['materi'] = Materi::where('id', '=', $id)->first();
         return json_encode($data);
     }
     public function update(Request $request){
