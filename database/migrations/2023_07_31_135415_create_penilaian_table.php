@@ -21,12 +21,10 @@ class CreatePenilaianTable extends Migration
             $table->string('kode_kelas',15);
             $table->unsignedBigInteger('guru_id');
             $table->unsignedBigInteger('santri_id');
-            $table->unsignedBigInteger('semester_id');
             $table->unsignedBigInteger('jadwal_id');
             $table->timestamp('created_at');
             $table->foreign('guru_id')->references('id')->on('guru')->onDelete('cascade');
             $table->foreign('santri_id')->references('id')->on('santri')->onDelete('cascade');
-            $table->foreign('semester_id')->references('id')->on('semester')->onDelete('cascade');
             $table->foreign('jadwal_id')->references('id')->on('jadwal')->onDelete('cascade');
         });
     }

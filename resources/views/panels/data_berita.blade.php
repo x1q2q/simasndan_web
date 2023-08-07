@@ -264,6 +264,9 @@
                     'data': 'isi_berita',
                     'className': "text-center",
                     'orderable': false,
+                    render: function(data, type, row, meta) {
+                        return `${data.substr(0,150)} ...`;
+                    }
                 },
                 {
                     'data': 'penulis',
@@ -435,25 +438,25 @@
         $('#form-save').attr('tipe','add');
     }
     function editData(id){
-            $('#form-save .modal-title').text("Edit Data");
-            $('#form-save').attr('tipe','edit');
-            let urlEdit = "{{ route('berita.detail',':id')}}";
-            $.ajax({
-                type:'GET',
-                url: urlEdit.replace(':id',id),
-                success:function(response){
-                    var resp = JSON.parse(response);
-                    var data = resp.berita;
-                    $('#form-save').find('#id_berita').val(data.id);
-                    $('#form-save').find('input#judul_berita').val(data.judul_berita);
-                    $('#form-save').find('select#kategori_berita').val(data.kategori_berita);
-                    $('#form-save').find('textarea#isi_berita').val(data.isi_berita);
-                    $('#form-save').find('select#penulis').val(data.penulis);
+        $('#form-save .modal-title').text("Edit Data");
+        $('#form-save').attr('tipe','edit');
+        let urlEdit = "{{ route('berita.detail',':id')}}";
+        $.ajax({
+            type:'GET',
+            url: urlEdit.replace(':id',id),
+            success:function(response){
+                var resp = JSON.parse(response);
+                var data = resp.berita;
+                $('#form-save').find('#id_berita').val(data.id);
+                $('#form-save').find('input#judul_berita').val(data.judul_berita);
+                $('#form-save').find('select#kategori_berita').val(data.kategori_berita);
+                $('#form-save').find('textarea#isi_berita').val(data.isi_berita);
+                $('#form-save').find('select#penulis').val(data.penulis);
 
-                    $('#modal-save').modal('show');
-                }
-            });
-        }
+                $('#modal-save').modal('show');
+            }
+        });
+    }
     
     function hapusData(id){
         let urlDelete = "{{ route('berita.delete',':id')}}";

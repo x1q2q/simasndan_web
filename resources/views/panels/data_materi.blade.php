@@ -208,15 +208,18 @@
                     'className': "text-center",
                     'orderable': false,
                     render: function (data, type, row, meta) {
-                            let attrImg = (isNotEmptyValue(data)) ? 
-                                `<img src="${urlPhoto+'/'+data}" class="img-fluid rounded img-thumb">` : '-';
-                            return attrImg;
-                        }
+                        let attrImg = (isNotEmptyValue(data)) ? 
+                            `<img src="${urlPhoto+'/'+data}" class="img-fluid rounded img-thumb">` : '-';
+                        return attrImg;
+                    }
                 },   
                 {
                     'data': 'deskripsi',
                     'className': "text-center",
                     'orderable': false,
+                    render: function (data, type, row, meta) {
+                        return `${data.substr(0,100)} ...`;
+                    }
                 },           
                 {
                     'data': 'id', 

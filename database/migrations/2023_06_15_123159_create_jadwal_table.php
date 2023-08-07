@@ -21,7 +21,9 @@ class CreateJadwalTable extends Migration
             $table->timestamp('created_at');
             $table->enum('sistem_penilaian',['kehadiran','nilai']);
             $table->unsignedBigInteger('materi_id');
+            $table->unsignedBigInteger('semester_id');
             $table->foreign('materi_id')->references('id')->on('materi')->onDelete('cascade');
+            $table->foreign('semester_id')->references('id')->on('semester')->onDelete('cascade');
         });
     }
 

@@ -3,6 +3,8 @@
     <title>Simasndan Web Apps - Data Santri Page</title>
     <meta name="description" content="Dashboard Page Sistem Informasi Manajemen Santri Al-Windan" />
     <meta name="_token" content="{{csrf_token()}}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/css/select2bootstrap.min.css') }}">
 @endsection
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -136,6 +138,14 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="semester" class="col-sm-4">Semester</label>
+                    <div class="col-sm-8">
+                        <select class="form-control form-select js-select3" 
+                        id="semester_selected" name="semester_selected[]" multiple style="width: 100%;" disabled readonly>
+                            </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="status_santri" class="col-sm-4">Status Keaktifan</label>
                     <div class="col-sm-8">
                         <span id="status_santri"></span>
@@ -176,7 +186,7 @@
 
 <!-- modal save -->
 <div class="modal fade" id="modal-save" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog sld-up" role="document">
+    <div class="modal-dialog modal-lg sld-up" role="document">
     <form action="" method="POST" id="form-save" class="modal-content" 
         tipe="" enctype="multipart/form-data">
         @csrf
@@ -192,14 +202,12 @@
             </div>
             <div class="modal-body p-4 pb-0">
                 <div class="row">
-                    <div class="col-12 mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" name="username" id="username" 
-                    placeholder="Masukkan username santri"/>
+                    <div class="col-6 mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" id="username" 
+                        placeholder="Masukkan username santri"/>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 mb-3 form-password-toggle">
+                    <div class="col-6 mb-3 form-password-toggle">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group input-group-merge">
                             <input type="password" id="password" class="form-control" name="password" placeholder="" aria-describedby="password" />
@@ -207,11 +215,21 @@
                         </div>                          
                     </div>
                 </div>
+                
                 <div class="row">
                     <div class="col-12 mb-3">
                     <label for="nama_santri" class="form-label">Nama Santri</label>
                     <input type="text" class="form-control" name="nama_santri" id="nama_santri" 
                     placeholder="Masukkan nama santri"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="semester_data" class="form-label">Semester</label>
+                        <select class="form-control form-select js-select2" 
+                            id="semester_data" name="semester_data[]" multiple style="width: 100%;">
+                        </select>
                     </div>
                 </div>
                 <div class="row">
@@ -281,6 +299,8 @@
 @section('extrascript')
 <script src="{{ asset('assets/vendor/libs/datatables/datatables.min.js') }}"></script>
 <script src="{{ asset('assets/js/ui-modals.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/select2/js/select2.full.min.js') }}"></script>
+
     @if(session('success'))
     <script type="text/javascript">
         let msg = "{{ session('success') }}"
@@ -294,6 +314,20 @@
         </script>
     @endif
 <script type="text/javascript">
+    $(function () {
+        $('.js-select2').select2({
+            placeholder: "Pilih",
+            allowClear: true,
+            theme: "bootstrap",
+            dropdownParent: $('#modal-save'),
+        });
+        $('.js-select3').select2({
+            placeholder: "Pilih",
+            allowClear: true,
+            theme: "bootstrap",
+            dropdownParent: $('#modal-detail'),
+        });        
+    });
     $(document).ready(function(){
         var dtableSantri = $('#datatable-santri').DataTable({
             "searching": false,
@@ -448,10 +482,36 @@
             });
     });
   
-    
+    function addSemesterData(itemSelected = [],target=''){
+        let semester_data = [];
+        let urlGetList = "{{ route('jadwal.getsemester')}}";
+        var target = (target == '') ? '#semester_data' : target;
+        $(target).html('');
+        $(target).append('');
+        $.ajax({
+            type: 'GET',
+            url: urlGetList,
+            success: function(response){ 
+                var data = JSON.parse(response);
+                for(var i=0;i<data.length; i++){
+                    var semester = data[i].id;
+                    semester_data.push(semester)
+                    var opt = new Option(`Semt.${data[i].semester} (${data[i].tahun_pelajaran})`,semester);
+                    if(jQuery.inArray(semester, itemSelected) >= 0){
+                        opt.selected=true;
+                    }
+                    $(target).append(opt);
+                }
+            },error: function(){
+                showToast('danger','Peringatan','Gagal! Database server error','#toast-alert');
+            }
+        });
+    }
+
     function addData(){
         $('#form-save .modal-title').text("Tambah Data");
         $('#form-save').attr('tipe','add');
+        addSemesterData();
     }
     function editData(id){
             $('#form-save .modal-title').text("Edit Data");
@@ -473,6 +533,10 @@
                     $('#form-save').find('select#tingkatan').val(data.tingkatan);
                     $('#form-save').find('textarea#alamat').val(data.alamat);
 
+                    let listIdSemt = resp.grup_semt.map(el => {
+                        return el.semester_id;
+                    });
+                    addSemesterData(listIdSemt);
                     const inputTag = 'form#form-save #password';
                     $(inputTag).addClass('is-invalid');
                     if(!$(inputTag).parent().find('.invalid-feedback').length){
@@ -494,23 +558,33 @@
                 var resp = JSON.parse(response);
                 var data = resp.santri;
                 var sttsPengurus = (data.is_pengurus == 1) ? 'Pengurus' : 'Bukan Pengurus';
+                var tmptLahir = (isNotEmptyValue(data.tempat_lahir)) ? data.tempat_lahir : '-';
+                var tglLahir = (isNotEmptyValue(data.tgl_lahir)) ? data.tgl_lahir : '-';
                 $('#form-detail').find('span#username').text('@'+data.username);
                 $('#form-detail').find('span#nama_santri').text(data.nama_santri);
                 $('#form-detail').find('span#email').text(data.email);
-                $('#form-detail').find('span#nomor_hp').text(data.nomor_hp);
-                $('#form-detail').find('span#ttl').text(data.tempat_lahir + ', ' + data.tgl_lahir);
+                $('#form-detail').find('span#nomor_hp').text(data.nomor_hp);                
+                $('#form-detail').find('span#ttl').text(tmptLahir + ', ' + tglLahir);
                 $('#form-detail').find('span#jenis_kelamin').text(data.jenis_kelamin);
                 $('#form-detail').find('span#tingkatan').text(data.tingkatan);
                 $('#form-detail').find('span#is_pengurus').text(sttsPengurus);
                 $('#form-detail').find('span#status_santri').text(data.status_santri);
                 $('#form-detail').find('span#universitas').text(data.universitas);
                 $('#form-detail').find('span#alamat').text(data.alamat);
+                let listIdSemt = resp.grup_semt.map(el => {
+                        return el.semester_id;
+                    });
+                addSemesterData(listIdSemt,'#semester_selected');
+                console.log(listIdSemt);
                 if(isNotEmptyValue(data.foto)){
                     $('#form-detail').find('#foto').html(
                             `<img class="img-fluid rounded" src="${urlPhoto}/${data.foto}" alt="">`);
                 }else{
                     $('#form-detail').find('#foto').html('-');
                 }
+
+               
+
                 $('#modal-detail').modal('show');
             }
         });

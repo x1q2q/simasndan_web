@@ -65,7 +65,7 @@
       <li class="menu-header small text-uppercase">
         <span class="menu-header-text">Absensi</span>
       </li>
-      <li class="menu-item {{ (request()->is('data-jadwal')) ? 'active' : '' }}">
+      <li class="menu-item {{ (request()->is('data-jadwal*')) ? 'active' : '' }}">
         <a href="{{ route('jadwal') }}" class="menu-link">
           <i class="menu-icon tf-icons bx bxs-chalkboard"></i>
           <div data-i18n="Basic">Data Jadwal</div>

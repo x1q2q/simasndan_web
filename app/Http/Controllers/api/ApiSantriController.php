@@ -8,7 +8,6 @@ use App\Http\Resources\SantriCollection;
 use App\Models\Santri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class ApiSantriController extends Controller
 {

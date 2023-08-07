@@ -23,12 +23,6 @@
     <!-- Striped Rows -->
     <div class="card">
     <div class="card-header row justify-content-start">
-        <div class="col-auto">
-            <button type="button" class="btn btn-dark rounded-3" onclick="addData()"
-                data-bs-toggle="modal" data-bs-target="#modal-save">
-                Tambah Penilaian <i class="bx bx-sm bxs-plus-circle"></i>
-            </button>
-        </div>
     </div>
     <form class="nopadding" action="" method="post" enctype="multipart/form-data" onsubmit="return false;">
         @csrf
@@ -61,7 +55,7 @@
             <th>Jadwal</th>
             <th>Dibuat</th>
             <th>Oleh</th>
-            <th style="width: 20%;" class="text-center">Aksi</th>
+            <th style="width: 10%;" class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0">
@@ -94,18 +88,24 @@
                 
                 <div class="row">
                     <div class="col-12 mb-3">
-                    <label for="penilaian" class="form-label">penilaian</label>
-                    <div class="input-group">
-                        <span class="input-group-text" id="basic-addon14">penilaian ke-</span>
-                        <input type="number" class="form-control" placeholder="cth:1" id="penilaian" name="penilaian">
-                    </div>                    
+                        <label for="nilai" class="form-label">Nilai</label>
+                        <input type="number" class="form-control" placeholder="0-100" id="nilai" name="nilai">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mb-3">
-                    <label for="tahun_pelajaran" class="form-label">Tahun Pelajaran</label>
-                    <input type="text" class="form-control" name="tahun_pelajaran" id="tahun_pelajaran" 
-                    placeholder="Masukkan tahun pelajaran. cth: 2020/2021"/>
+                        <label for="presensi" class="form-label">Kehadiran</label>
+                        <select class="form-control form-select" id="presensi"
+                        name="presensi" style="width:100%">
+                            <option value="hadir">Hadir</option>
+                            <option value="absen">Absen</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="deskripsi" class="form-label">Deskripsi</label>
+                        <textarea name="deskripsi" id="deskripsi" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
                 
@@ -167,7 +167,7 @@
                     'orderable': false,
                 },
                 {
-                    'data': 'santri_id',
+                    'data': 'nama_santri',
                     'className': "text-center",
                     'orderable': false,
                 },
@@ -192,7 +192,7 @@
                     'orderable': false,
                 }, 
                 {
-                    'data': 'jadwal_id',
+                    'data': 'kegiatan',
                     'className': "text-center",
                     'orderable': false,
                 },
@@ -202,7 +202,7 @@
                     'orderable': false,
                 },
                 {
-                    'data': 'guru_id',
+                    'data': 'nama_guru',
                     'className': "text-center",
                     'orderable': false,
                 },
@@ -214,10 +214,6 @@
                     return `<button onclick="editData('${data}')" type="button" class="btn rounded-pill btn-icon 
                             btn-warning" title="edit data">
                                 <span class="tf-icons bx bx-edit-alt"></span>
-                            </button>
-                            <button onclick="hapusData('${data}')" type="button" class="btn rounded-pill btn-icon 
-                            btn-danger" title="hapus data">
-                                <span class="tf-icons bx bx-trash"></span>
                             </button>`;
                     }
                 },
@@ -264,8 +260,7 @@
                 let siteUrl = "{{ route('penilaian') }}";
                 let formData = new FormData(this);
                 let idpenilaian = $('#form-save').find('#id_penilaian').val();
-                let urlPost =  ($(this).attr('tipe') == 'add') ? 
-                    `${siteUrl}/insert`: `${siteUrl}/update`;
+                let urlPost =  `${siteUrl}/update`;
 
                 formData.append('id',idpenilaian)
                 resetValidationError(); // agar bisa mengambil kondisi field terbaru
@@ -302,10 +297,7 @@
             });
     });
 
-    function addData(){
-        $('#form-save .modal-title').text("Tambah Data");
-        $('#form-save').attr('tipe','add');
-    }
+    
     function editData(id){
             $('#form-save .modal-title').text("Edit Data");
             $('#form-save').attr('tipe','edit');
@@ -317,18 +309,15 @@
                     var resp = JSON.parse(response);
                     var data = resp.penilaian;
                     $('#form-save').find('#id_penilaian').val(data.id);
-                    $('#form-save').find('input#penilaian').val(data.penilaian);
-                    $('#form-save').find('input#tahun_pelajaran').val(data.tahun_pelajaran);
+                    $('#form-save').find('input#nilai').val(data.nilai);
+                    $('#form-save').find('select#presensi').val(data.presensi);
+                    $('#form-save').find('textarea#deskripsi').val(data.deskripsi);
 
                     $('#modal-save').modal('show');
                 }
             });
     }
     
-    function hapusData(id){
-        let urlDelete = "{{ route('penilaian.delete',':id')}}";
-        $("#confirm-delete").modal('show');
-        $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
-    }
+    
 </script>
 @endsection
