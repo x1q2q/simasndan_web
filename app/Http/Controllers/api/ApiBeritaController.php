@@ -17,7 +17,7 @@ class ApiBeritaController extends Controller
      */
     public function index()
     {
-        $response = new BeritaCollection(Berita::all(),BeritaResource::class);
+        $response = new BeritaCollection(Berita::orderBy('created_at','desc')->get(),BeritaResource::class);
         return response()->json($response);
     }
 
@@ -69,7 +69,7 @@ class ApiBeritaController extends Controller
     }
     public function filter($filter){
 
-        $berita = Berita::where('kategori_berita', '=', $filter)->get();        
+        $berita = Berita::where('kategori_berita', '=', $filter)->orderBy('created_at','desc')->get();        
         $response = new BeritaCollection($berita,BeritaResource::class);
         return response()->json($response);
     }

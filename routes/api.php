@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\ApiSantriController;
 use App\Http\Controllers\api\ApiMateriController;
 use App\Http\Controllers\api\ApiBeritaController;
+use App\Http\Controllers\api\ApiRekapController;
 use App\Http\Controllers\api\AuthController;
 
 /*
@@ -33,4 +34,6 @@ Route::group(['middleware' => 'cors'], function(){
     Route::apiResource('materi', ApiMateriController::class);
     Route::apiResource('berita', ApiBeritaController::class);
     Route::get('berita/filter/{any}',[ApiBeritaController::class, 'filter']);
+    Route::get('semester/{id}',[ApiRekapController::class, 'semester']);
+    Route::get('penilaian/{santriId}/{semtId}',[ApiRekapController::class, 'penilaian']);
 });

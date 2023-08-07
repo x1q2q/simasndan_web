@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Santri;
+use App\Models\GrupSemester;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
@@ -67,7 +68,15 @@ class SantriController extends Controller
             $santri->alamat = $request->alamat;
             $santri->universitas  = '-';
             $santri->created_at = now();
-            $santri->save();
+            if($santri->save()){
+                $semesters = $request->semester_data;
+                foreach($semesters as $semt){
+                    $grupSemt = new GrupSemester();
+                    $grupSemt->semester_id = (int)$semt;
+                    $grupSemt->santri_id = $santri->id;
+                    $grupSemt->save();
+                }
+            }
 
             $result = [
                 'status' => 200,
@@ -79,7 +88,8 @@ class SantriController extends Controller
         return response()->json($result);
     }
     public function detail($id){
-        $data['santri'] = Santri::where('id', '=', $id)->first();;
+        $data['santri'] = Santri::where('id', '=', $id)->first();
+        $data['grup_semt'] = GrupSemester::where('santri_id', '=', $id)->get()->toArray();
         return json_encode($data);
     }
     public function update(Request $request){
@@ -113,7 +123,18 @@ class SantriController extends Controller
             $santri->jenis_kelamin = $request->jenis_kelamin;
             $santri->tingkatan = $request->tingkatan;
             $santri->alamat = $request->alamat;
-            $santri->save();
+            // clear all old data (grup_semester)
+            $oldGrupSemt = GrupSemester::where('santri_id', '=', $id);
+            if($santri->save()){    
+                $oldGrupSemt->delete();            
+                $semesters = $request->semester_data;
+                foreach($semesters as $semt){
+                    $grupSemt = new GrupSemester();
+                    $grupSemt->semester_id = (int)$semt;
+                    $grupSemt->santri_id = $santri->id;
+                    $grupSemt->save();
+                }
+            }
 
             $result = [
                 'status' => 200,
@@ -126,6 +147,8 @@ class SantriController extends Controller
     }
     public function delete($id){
         $santri = Santri::where('id', '=', $id);
+        $oldGrupSemt = GrupSemester::where('santri_id', '=', $id);
+        $oldGrupSemt->delete();
         if($santri->delete()){
             $result = [
               'status' => 'success',
