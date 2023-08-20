@@ -29,11 +29,16 @@ Route::fallback(function(){
 });
 
 Route::group(['middleware' => 'cors'], function(){
-    Route::post('login',[AuthController::class,'login']);
+    Route::post('santri/login',[AuthController::class,'login']);
     Route::apiResource('santri', ApiSantriController::class);
     Route::apiResource('materi', ApiMateriController::class);
     Route::apiResource('berita', ApiBeritaController::class);
     Route::get('berita/filter/{any}',[ApiBeritaController::class, 'filter']);
+    Route::get('berita/headlines/{any}',[ApiBeritaController::class, 'getHeadlines']);
     Route::get('semester/{id}',[ApiRekapController::class, 'semester']);
     Route::get('penilaian/{santriId}/{semtId}',[ApiRekapController::class, 'penilaian']);
+    Route::get('santri/checkuuid/{any}',[ApiSantriController::class, 'checkUUID']);
+    Route::post('santri/updateuuid/{idSantri}',[ApiSantriController::class, 'updateUUID']);
+    Route::get('santri/getnotif/{any}',[ApiSantriController::class, 'getNotifikasi']);
 });
+

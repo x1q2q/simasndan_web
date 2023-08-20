@@ -195,4 +195,5 @@ class JadwalController extends Controller
           }
           return redirect()->back()->with($result['status'], $result['message']);
     }
+    
 }

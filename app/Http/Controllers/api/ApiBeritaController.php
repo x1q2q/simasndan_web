@@ -73,4 +73,9 @@ class ApiBeritaController extends Controller
         $response = new BeritaCollection($berita,BeritaResource::class);
         return response()->json($response);
     }
+    public function getHeadlines($limit){
+        $berita = Berita::limit($limit)->orderBy('created_at','desc')->get();        
+        $response = new BeritaCollection($berita,BeritaResource::class);
+        return response()->json($response);
+    }
 }

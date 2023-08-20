@@ -22,7 +22,7 @@ class ApiRekapController extends Controller
 
     public function penilaian($santriId, $semtId)
     {
-        $matchColumn = ['penilaian.santri_id' => $santriId, 'semester' => $semtId];
+        $matchColumn = ['penilaian.santri_id' => $santriId, 'jadwal.semester_id' => $semtId];
         $query = Jadwal::select('penilaian.santri_id','jadwal.semester_id','jadwal.materi_id','materi.nama_materi')
         ->join('penilaian', 'jadwal.id', '=', 'penilaian.jadwal_id')
         ->join('materi', 'jadwal.materi_id', '=', 'materi.id')

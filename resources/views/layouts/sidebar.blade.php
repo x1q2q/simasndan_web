@@ -62,6 +62,14 @@
           <div data-i18n="Basic">Data Semester</div>
         </a>
       </li>
+      <li class="menu-item {{ (request()->is('data-notifikasi')) ? 'active' : '' }}">
+        <a href="{{ route('notifikasi') }}" class="menu-link">
+          <i class="menu-icon tf-icons bx bxs-bell"></i>
+          <div data-i18n="Basic">Data Notifikasi</div>
+        </a>
+      </li>
+      
+
       <li class="menu-header small text-uppercase">
         <span class="menu-header-text">Absensi</span>
       </li>

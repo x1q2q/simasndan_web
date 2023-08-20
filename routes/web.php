@@ -12,8 +12,8 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\AbsenkanController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Middleware\Authenticate;
-use App\Models\Penilaian;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -105,7 +105,10 @@ Route::middleware(['is-auth'])->group(function () {
     Route::post('/data-penilaian/lists',[PenilaianController::class, 'lists'])->name('penilaian.lists');
     Route::get('/data-penilaian/detail/{id}',[PenilaianController::class, 'detail'])->name('penilaian.detail');
     Route::post('/data-penilaian/update',[PenilaianController::class, 'update'])->name('penilaian.update');
-    
+
+    Route::get('/data-notifikasi',[NotifikasiController::class,'index'])->name('notifikasi');
+    Route::post('/data-notifikasi/lists',[NotifikasiController::class, 'lists'])->name('notifikasi.lists');
+    Route::post('/data-notifikasi/insert',[NotifikasiController::class, 'insert'])->name('notifikasi.insert');
 });
 
 Route::middleware(['user-access:admin'])->group(function () { // only admin can use this

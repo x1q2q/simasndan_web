@@ -168,6 +168,7 @@ return [
          */
 
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Kreait\Laravel\Firebase\ServiceProvider::class,
         /*
          * Application Service Providers...
          */

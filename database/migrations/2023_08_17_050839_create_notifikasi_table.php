@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBeritaTable extends Migration
+class CreateNotifikasiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateBeritaTable extends Migration
      */
     public function up()
     {
-        Schema::create('berita', function (Blueprint $table) {
+        Schema::create('notifikasi', function (Blueprint $table) {
             $table->id();
-            $table->string('judul_berita',50);
-            $table->enum('kategori_berita',['artikel','pengumuman','jadwal']);
-            $table->text('isi_berita');            
-            $table->enum('penulis',['admin','pengurus','pengasuh']);
+            $table->string('judul',35);
+            $table->string('pesan',100);
+            $table->enum('tipe',['jadwal','kelas','pengumuman']);
             $table->timestamp('created_at');
         });
     }
@@ -30,6 +29,6 @@ class CreateBeritaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('berita');
+        Schema::dropIfExists('notifikasi');
     }
 }
