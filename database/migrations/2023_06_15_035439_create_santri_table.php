@@ -29,6 +29,8 @@ class CreateSantriTable extends Migration
             $table->enum('jenis_kelamin', ['laki-laki','perempuan']);
             $table->enum('status_santri', ['aktif','alumni']);
             $table->text('universitas');
+            $table->text('uuid')->nullable();
+            $table->text('fcm_token')->nullable();
             $table->timestamp('created_at');
         });
     }

@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\BeritaResource;
 
-class MediaResource extends JsonResource
+class NotifikasiResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +15,11 @@ class MediaResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'        => $this->id,
-            'type'      => $this->type_media,
-            'nama'      => $this->nama,
-            'berita_id' => $this->berita_id
+            'id'            => $this->id,
+            'judul'         => $this->judul,
+            'pesan'         => $this->pesan,
+            'tipe'          => $this->tipe,
+            'created_at'    => $this->created_at
         ];
     }
 }

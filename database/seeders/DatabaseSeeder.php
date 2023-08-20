@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
             santriSeeder::class,
             adminSeeder::class,
             guruSeeder::class,
-            beritaSeeder::class
+            beritaSeeder::class,
+            materiSeeder::class,
+            mediaSeeder::class
         ]);
 
     }

@@ -53,12 +53,12 @@
         <thead>
             <tr>
             <th>No.</th>
-            <th >Nama Materi</th>
-            <th style="width: 10%;">Kode materi</th>
-            <th>Link Materi</th>
-            <th style="width: 15%;">Foto</th>
+            <th style="width: 15%;">Nama Materi</th>
+            <th >Kode materi</th>
+            <th style="width: 15%;" class="text-center">Link Materi</th>
+            <th style="width: 20%;">Foto</th>
             <th style="width: 20%;">Deskripsi</th>
-            <th style="width: 20%;" class="text-center">Aksi</th>
+            <th style="width: 15%;" class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0">
@@ -145,7 +145,23 @@
 </div>
 
 <style type="text/css">
+    .widthlink{
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    }
 </style>
 @endsection
 @section('extrascript')
@@ -200,8 +216,11 @@
                 },
                 {
                     'data': 'link_materi',
-                    'className': "text-center",
+                    'className': "widthlink",
                     'orderable': false,
+                    render: function(data, type, row, meta){
+                        return `<a href="${data}" target="_blank">${data}</a>`
+                    }
                 },
                 {
                     'data': 'foto',

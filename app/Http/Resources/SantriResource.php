@@ -28,7 +28,8 @@ class SantriResource extends JsonResource
             'is_pengurus'   => $this->is_pengurus,
             'jenis_kelamin' => $this->jenis_kelamin,
             'status'        => $this->status_santri,
-            'universitas'   => $this->universitas
+            'universitas'   => $this->universitas,
+            'uuid'          => $this->uuid
         ];
     }
 }

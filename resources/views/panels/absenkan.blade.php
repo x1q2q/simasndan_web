@@ -34,7 +34,7 @@
                 <label class="btn btn-outline-secondary" for="btnradio1"><?php echo ($jadwal->sistem_penilaian == 'kehadiran') ? 'Hadir':'100'; ?>-kan Semua</label>
                 <input type="radio" class="btn-check" name="switchbtn" id="btnradio2" autocomplete="off" onClick="switchValue()">
                 <label class="btn btn-outline-secondary" for="btnradio2"><?php echo ($jadwal->sistem_penilaian == 'nilai') ? '0':'Absen'; ?>-kan Semua</label>
-              </div>
+            </div>
             <button type="button" class="btn btn-success rounded-3" onclick="saveAllData()" >
                 Update Semua <i class="bx bx-sm bx-check-double"></i>
             </button>
@@ -191,7 +191,7 @@
     function switchValue(){
         $('table > tbody  > tr').each(function(i) { 
             var idTr = $(this).data('id');
-            var sistem = {!! json_encode($jadwal->sistem_penilaian) !!};;
+            var sistem = {!! json_encode($jadwal->sistem_penilaian) !!};
             var checkedValPresensi = $('#btnradio1').is(":checked") ? 'hadir': 'absen';
             var checkedValNilai = $('#btnradio2').is(":checked") ? '0': '100';
             var oldDesc = $(this).find('td:eq(3) textarea').data('oldval');

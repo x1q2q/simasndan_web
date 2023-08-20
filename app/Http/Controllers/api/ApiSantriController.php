@@ -5,7 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SantriResource;
 use App\Http\Resources\SantriCollection;
+use App\Http\Resources\NotifikasiResource;
+use App\Http\Resources\NotifikasiCollection;
 use App\Models\Santri;
+use App\Models\Notifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -61,15 +64,18 @@ class ApiSantriController extends Controller
         $file    = $request->image;
         $uname   = $request->username;
         $fotoName = $this->uploadFile($hasFile,$file,$uname);
-        $santri->update([
+        $updateFields = [
             'nama_santri'   => $request->nama_santri,
             'tempat_lahir'  => $request->tempat_lahir,
             'tgl_lahir'     => date('Y-m-d',strtotime($request->tgl_lahir)),
             'universitas'   => $request->universitas,
             'alamat'        => $request->alamat,
             'id'            => $request->id,
-            'foto'          => $fotoName
-        ]);
+        ];
+        if($fotoName!=null){
+            $updateFields['foto'] = $fotoName;
+        }
+        $santri->update($updateFields);
         return response()->json(["data" => [
             "success" => true,
             "request" => $request->all(),
@@ -86,7 +92,7 @@ class ApiSantriController extends Controller
 
             $foto = $file;
             $slug = str_replace(' ', '-', strtolower($uname));
-            $fotoName = "santri_".$slug."_".time().$foto->getClientOriginalExtension();
+            $fotoName = "santri_".$slug."_".time().".".$foto->getClientOriginalExtension();
             $foto->move($content_directory, $fotoName);
 
         }else {
@@ -94,4 +100,30 @@ class ApiSantriController extends Controller
         }
         return $fotoName;
     }
+    public function checkUUID($uuid)
+    {
+        $santri = Santri::where('uuid', '=', $uuid)->first();
+        $response = new SantriResource($santri);
+        return response()->json(["data" => $response]);
+    }
+    public function updateUUID(Request $request, $idSantri)
+    {
+        $updateFields = [
+            'uuid'      => $request->uuid,
+            'email'     => $request->email,
+            'fcm_token' => $request->fcm_token
+        ];
+        $santri = Santri::where('id', '=', $idSantri)->first();
+        $santri->update($updateFields);
+        $response = new SantriResource($santri);
+        return response()->json(["data" => $response]);
+    }
+    public function getNotifikasi($id){
+        $query = Notifikasi::join('grup_notifikasi', 'notifikasi.id', '=', 'grup_notifikasi.notif_id')
+        ->where('grup_notifikasi.santri_id','=',$id)->orderBy('created_at','desc')->get();
+        $response = new NotifikasiCollection($query,NotifikasiResource::class);
+        return response()->json($response);
+    }
+    
+
 }

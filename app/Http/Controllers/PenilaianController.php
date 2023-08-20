@@ -26,9 +26,9 @@ class PenilaianController extends Controller
             ->where(function ($query) use ($post) {
             if (!empty($post["s_keyword"])) {
                 $query->where('kegiatan', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
-                    ->orWhere('kode_kelas', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
-                    ->orWhere('waktu_mulai', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
-                    ->orWhere('created_at', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%');
+                    ->orWhere('penilaian.kode_kelas', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
+                    ->orWhere('santri.nama_santri', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
+                    ->orWhere('waktu_mulai', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%');
             }})->orderBy('id','desc');
 
         return \DataTables::eloquent($beritaLists)->addIndexColumn()->toJson();

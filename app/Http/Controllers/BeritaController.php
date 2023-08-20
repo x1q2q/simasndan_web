@@ -63,7 +63,6 @@ class BeritaController extends Controller
                 $media = new Media();
                 $media->type_media = 'gambar';
                 $media->nama       = $fotoName;
-                $media->ekstensi   = $file->getClientOriginalExtension();
                 $media->berita_id  = $berita->id;
                 $media->save();
             }

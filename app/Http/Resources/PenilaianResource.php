@@ -15,7 +15,7 @@ class PenilaianResource extends JsonResource
      */
     public function toArray($request)
     {
-        $matchColumn = ['penilaian.santri_id' => $this->santri_id, 'semester' => $this->semester_id,'materi_id' => $this->materi_id];
+        $matchColumn = ['penilaian.santri_id' => $this->santri_id, 'jadwal.semester_id' => $this->semester_id,'materi_id' => $this->materi_id];
         return [
             'materi'    => $this->nama_materi,
             'penilaian' =>  Jadwal::select('jadwal.kegiatan','jadwal.kode_kelas','jadwal.waktu_mulai',
