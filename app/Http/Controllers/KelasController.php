@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Kelas;
 use App\Models\Santri;
 use Illuminate\Support\Facades\Validator;
@@ -12,11 +11,7 @@ use \Illuminate\Support\Facades\DB;
 class KelasController extends Controller
 {
     public function index(){
-        $table = request()->session()->get('table');
-        $data = array(
-            'nama' => Auth::guard($table)->user()->username,
-            'role' => request()->session()->get('role')
-        );
+        $data = $this->getDataBasics();
         return view('panels.data_kelas', $data);
     }
     public function lists(Request $request){

@@ -66,9 +66,10 @@
             <th>No.</th>
             <th style="width: 20%;">Nama Santri</th>
             <th style="width: 15%;">Jenis Kelamin</th>
-            <th style="width: 15%;">Tingkatan</th>
-            <th style="width: 15%;">Status</th>
-            <th>Alamat</th>
+            <th style="width: 15%;">Email</th>
+            <th >Tingkatan</th>
+            <th >Status</th>
+            <th style="width: 15%;">Alamat</th>
             <th style="width: 20%;">Aksi</th>
             </tr>
         </thead>
@@ -183,6 +184,33 @@
 </div>
 
 @include('layouts.modal_delete')
+
+<div class="modal fade" id="confirm-reset" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered sld-up" role="document">
+        <form class="modal-content" method="POST" action="" id="form-reset">
+        @csrf
+        @method('DELETE')
+        <div class="modal-header border-bottom">
+            <h5 class="modal-title">Yakin untuk mereset email ini?</h5>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            ></button>
+        </div>
+        <div class="modal-body p-4 pb-0"> 
+            <p>Data yang direset tidak akan bisa dikembalikan lagi</p> 
+        </div>    
+        <div class="modal-footer p-4 pt-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                Close
+            </button>
+            <input type="submit" id="delete-button" class="btn btn-danger" value="Ya, Reset">
+        </div>
+        </form>
+    </div>
+</div>
 
 <!-- modal save -->
 <div class="modal fade" id="modal-save" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
@@ -360,6 +388,20 @@
                     'data': 'jenis_kelamin',
                     'className': "text-center",
                     'orderable': false,
+                },
+                {
+                    'data': 'email',
+                    'className': "text-center",
+                    'orderable': false,
+                    render: function(data, type, row, meta) {
+                        return (isNotEmptyValue(data)) ?
+                        `${data}
+                        <button onclick="resetEmail('${row.id}')" type="button" 
+                        class="btn btn-sm rounded-pill btn-outline-secondary" title="reset email">
+                            reset tautan email <span class="tf-icons bx bx-envelope"></span>
+                        </button>`
+                         : '<i class="bg-warning text-white">belum ditautkan</i>';
+                    }
                 },
                 {
                     'data': 'tingkatan',
@@ -593,6 +635,11 @@
         let urlDelete = "{{ route('santri.delete',':id')}}";
         $("#confirm-delete").modal('show');
         $('#confirm-delete').find('form').attr('action',urlDelete.replace(':id', id));
+    }
+    function resetEmail(id){
+        let urlReset = "{{ route('santri.resetemail',':id')}}";
+        $("#confirm-reset").modal('show');
+        $('#confirm-reset').find('form').attr('action',urlReset.replace(':id', id));
     }
 </script>
 @endsection

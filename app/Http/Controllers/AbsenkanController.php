@@ -15,13 +15,9 @@ class AbsenkanController extends Controller
         $penilaians = Penilaian::select('penilaian.*','santri.nama_santri')
                         ->join('santri', 'penilaian.santri_id', '=', 'santri.id')
                         ->where('jadwal_id','=',$id)->get();
-        $table = request()->session()->get('table');
-        $data = array(
-            'nama'      => Auth::guard($table)->user()->username,
-            'role'      => request()->session()->get('role'),
-            'jadwal'    => json_decode($detailJadwal)->jadwal,
-            'penilaian' => $penilaians
-        );
+        $data = $this->getDataBasics();
+        $data['jadwal'] = json_decode($detailJadwal)->jadwal;
+        $data['penilaian'] = $penilaians;
         return view('panels.absenkan', $data);
     }
     public function update(Request $request){

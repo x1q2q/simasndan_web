@@ -41,6 +41,7 @@ Route::middleware(['is-auth'])->group(function () {
     Route::get('/data-santri/detail/{id}',[SantriController::class, 'detail'])->name('santri.detail');
     Route::post('/data-santri/insert',[SantriController::class, 'insert'])->name('santri.insert');
     Route::post('/data-santri/update',[SantriController::class, 'update'])->name('santri.update');
+    Route::delete('/data-santri/reset-email/{id}',[SantriController::class, 'resetEmail'])->name('santri.resetemail');
 
 
     Route::get('/data-admin',[AdminController::class, 'index'])->name('admin');
@@ -58,12 +59,7 @@ Route::middleware(['is-auth'])->group(function () {
     Route::post('/data-guru/update',[GuruController::class, 'update'])->name('guru.update');
     Route::delete('/data-guru/delete/{id}',[GuruController::class, 'delete'])->name('guru.delete');
 
-    Route::get('/data-materi',[MateriController::class, 'index'])->name('materi');
-    Route::post('/data-materi/lists',[MateriController::class, 'lists'])->name('materi.lists');
-    Route::get('/data-materi/detail/{id}',[MateriController::class, 'detail'])->name('materi.detail');
-    Route::post('/data-materi/insert',[MateriController::class, 'insert'])->name('materi.insert');
-    Route::post('/data-materi/update',[MateriController::class, 'update'])->name('materi.update');
-    Route::delete('/data-materi/delete/{id}',[MateriController::class, 'delete'])->name('materi.delete');
+    
 
     Route::get('/data-berita',[BeritaController::class, 'index'])->name('berita');
     Route::post('/data-berita/lists',[BeritaController::class, 'lists'])->name('berita.lists');
@@ -72,6 +68,27 @@ Route::middleware(['is-auth'])->group(function () {
     Route::post('/data-berita/update',[BeritaController::class, 'update'])->name('berita.update');
     Route::delete('/data-berita/delete/{id}',[BeritaController::class, 'delete'])->name('berita.delete');
     
+    Route::get('/data-jadwal/getkelas',[JadwalController::class,'getKelasData'])->name('jadwal.getkelas');
+    Route::get('/data-jadwal/getmateri',[JadwalController::class,'getMateriData'])->name('jadwal.getmateri');
+    Route::get('/data-jadwal/getsemester',[JadwalController::class,'getSemesterData'])->name('jadwal.getsemester');
+    Route::get('/data-kelas/getsantri',[KelasController::class,'getSantriData'])->name('kelas.getsantri');
+    
+    Route::get('/data-notifikasi',[NotifikasiController::class,'index'])->name('notifikasi');
+    Route::post('/data-notifikasi/lists',[NotifikasiController::class, 'lists'])->name('notifikasi.lists');
+    Route::post('/data-notifikasi/insert',[NotifikasiController::class, 'insert'])->name('notifikasi.insert');
+});
+
+
+Route::middleware(['user-access:admin'])->group(function () { // only admin can use this
+    Route::delete('/data-santri/delete/{id}',[SantriController::class, 'delete'])->name('santri.delete');
+});
+
+Route::middleware(['user-access:guru-admin'])->group(function () { // only guru or admin can use this
+    Route::get('/data-materi',[MateriController::class, 'index'])->name('materi');
+    Route::post('/data-materi/lists',[MateriController::class, 'lists'])->name('materi.lists');
+    Route::get('/data-materi/detail/{id}',[MateriController::class, 'detail'])->name('materi.detail');
+    
+
     Route::get('/data-semester',[SemesterController::class,'index'])->name('semester');
     Route::post('/data-semester/lists',[SemesterController::class, 'lists'])->name('semester.lists');
     Route::get('/data-semester/detail/{id}',[SemesterController::class, 'detail'])->name('semester.detail');
@@ -82,16 +99,10 @@ Route::middleware(['is-auth'])->group(function () {
     Route::get('/data-jadwal',[JadwalController::class,'index'])->name('jadwal');
     Route::post('/data-jadwal/lists',[JadwalController::class, 'lists'])->name('jadwal.lists');
     Route::get('/data-jadwal/detail/{id}',[JadwalController::class, 'detail'])->name('jadwal.detail');
-    Route::post('/data-jadwal/insert',[JadwalController::class, 'insert'])->name('jadwal.insert');
-    Route::post('/data-jadwal/update',[JadwalController::class, 'update'])->name('jadwal.update');
-    Route::delete('/data-jadwal/delete/{id}',[JadwalController::class, 'delete'])->name('jadwal.delete');
-    Route::get('/data-jadwal/getkelas',[JadwalController::class,'getKelasData'])->name('jadwal.getkelas');
-    Route::get('/data-jadwal/getmateri',[JadwalController::class,'getMateriData'])->name('jadwal.getmateri');
-    Route::get('/data-jadwal/getsemester',[JadwalController::class,'getSemesterData'])->name('jadwal.getsemester');
 
+    
     Route::get('/data-jadwal/absenkan/{id}',[AbsenkanController::class,'index'])->name('absenkan');
-    Route::post('/data-jadwal/absenkan/update',[AbsenkanController::class,'update'])->name('absenkan.update');
-    Route::post('/data-jadwal/absenkan/updateall',[AbsenkanController::class,'updateAll'])->name('absenkan.updateall');
+        
 
     Route::get('/data-kelas',[KelasController::class,'index'])->name('kelas');
     Route::post('/data-kelas/lists',[KelasController::class, 'lists'])->name('kelas.lists');
@@ -99,18 +110,23 @@ Route::middleware(['is-auth'])->group(function () {
     Route::post('/data-kelas/insert',[KelasController::class, 'insert'])->name('kelas.insert');
     Route::post('/data-kelas/update',[KelasController::class, 'update'])->name('kelas.update');
     Route::delete('/data-kelas/delete/{id}',[KelasController::class, 'delete'])->name('kelas.delete');
-    Route::get('/data-kelas/getsantri',[KelasController::class,'getSantriData'])->name('kelas.getsantri');
+    
 
     Route::get('/data-penilaian',[PenilaianController::class,'index'])->name('penilaian');
     Route::post('/data-penilaian/lists',[PenilaianController::class, 'lists'])->name('penilaian.lists');
     Route::get('/data-penilaian/detail/{id}',[PenilaianController::class, 'detail'])->name('penilaian.detail');
-    Route::post('/data-penilaian/update',[PenilaianController::class, 'update'])->name('penilaian.update');
-
-    Route::get('/data-notifikasi',[NotifikasiController::class,'index'])->name('notifikasi');
-    Route::post('/data-notifikasi/lists',[NotifikasiController::class, 'lists'])->name('notifikasi.lists');
-    Route::post('/data-notifikasi/insert',[NotifikasiController::class, 'insert'])->name('notifikasi.insert');
 });
 
-Route::middleware(['user-access:admin'])->group(function () { // only admin can use this
-    Route::delete('/data-santri/delete/{id}',[SantriController::class, 'delete'])->name('santri.delete');
+Route::middleware(['user-access:guru'])->group(function () { 
+    Route::post('/data-materi/insert',[MateriController::class, 'insert'])->name('materi.insert');
+    Route::post('/data-materi/update',[MateriController::class, 'update'])->name('materi.update');
+    Route::delete('/data-materi/delete/{id}',[MateriController::class, 'delete'])->name('materi.delete');
+
+
+    Route::post('/data-jadwal/insert',[JadwalController::class, 'insert'])->name('jadwal.insert');
+    Route::post('/data-jadwal/update',[JadwalController::class, 'update'])->name('jadwal.update');
+    Route::delete('/data-jadwal/delete/{id}',[JadwalController::class, 'delete'])->name('jadwal.delete');
+    Route::post('/data-penilaian/update',[PenilaianController::class, 'update'])->name('penilaian.update');
+    Route::post('/data-jadwal/absenkan/update',[AbsenkanController::class,'update'])->name('absenkan.update');
+    Route::post('/data-jadwal/absenkan/updateall',[AbsenkanController::class,'updateAll'])->name('absenkan.updateall');
 });
