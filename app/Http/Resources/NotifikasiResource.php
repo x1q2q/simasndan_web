@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Notifikasi;
 
 class NotifikasiResource extends JsonResource
 {
@@ -15,11 +16,11 @@ class NotifikasiResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'            => $this->id,
-            'judul'         => $this->judul,
-            'pesan'         => $this->pesan,
-            'tipe'          => $this->tipe,
-            'created_at'    => $this->created_at
+            'tanggal'    => $this->tanggal,
+            'notif_list' => Notifikasi::join('grup_notifikasi', 'notifikasi.id', '=', 'grup_notifikasi.notif_id')
+            ->where('grup_notifikasi.santri_id','=',$this->santri_id)
+            ->whereDate('created_at','=',$this->tanggal)
+            ->orderBy('created_at','desc')->get()
         ];
     }
 }

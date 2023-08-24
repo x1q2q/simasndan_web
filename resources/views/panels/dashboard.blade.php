@@ -26,9 +26,9 @@
             <div class="card-body">
                 <h5 class="card-title text-primary">Selamat datang <strong>{{ $nama_lengkap }}</strong>! 🎉</h5>
                 <p class="mb-4">
-                Terdapat <span class="fw-bold">3</span> jadwal kelas aktif pada hari ini.
+                Terdapat <span class="fw-bold">{{ $stats['jadwal_today'] }}</span> jadwal kelas pada hari ini
                 </p> 
-                <a href="#" class="btn btn-sm btn-outline-primary">Cek Jadwal</a>
+                <a href="{{ route('jadwal') }}" class="btn btn-sm btn-outline-primary">Cek Jadwal</a>
             </div>
             </div>
             <div class="col-sm-5 text-center text-sm-left">
@@ -134,11 +134,11 @@
                 <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
                 <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                     <div class="card-title">
-                    <h5 class="text-nowrap mb-3">Grafik Absensi Semester</h5>
+                    <h5 class="text-nowrap mb-3">Grafik kehadiran/tahun</h5>
                     <span class="badge bg-label-warning rounded-pill">{{ $stats["jadwal_years"]["year"] }}</span>
                     </div>
                     <div class="mt-sm-auto">
-                    <h3 class="mb-0">{{ $stats["jadwal_years"]["total"] }} absen</h3>
+                    <h3 class="mb-0">{{ $stats["jadwal_years"]["total"] }} kehadiran</h3>
                     </div>
                 </div>
                 <div id="jadwalReportChart"></div>
@@ -152,7 +152,7 @@
     <div class="row">
         <div class="col-6">
             <div class="card">
-                <h5 class="card-header">Jadwal Kelas per-minggu</h5>
+                <h5 class="card-header">Jadwal Kelas minggu terakhir</h5>
                 <div class="card-body" id="column-chart">
                 </div>
             </div>
@@ -231,7 +231,7 @@
             },
             xaxis: {
             type: 'date',
-            categories: ["2023-08-01", "2023-08-02", "2023-08-03", "2023-08-04", "2023-08-05", "2023-08-06", "2023-08-07"]
+            categories: notifs.categories
             },
             tooltip: {
             x: {

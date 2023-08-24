@@ -6,17 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Santri;
 use App\Models\GrupSemester;
+use App\Models\GrupNotifikasi;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 
 class SantriController extends Controller
 {
     public function index(){
-        $table = request()->session()->get('table');
-        $data = array(
-            'nama' => Auth::guard($table)->user()->username,
-            'role' => request()->session()->get('role')
-        );
+        $data = $this->getDataBasics();
         return view('panels.data_santri', $data);
     }
     public function lists(Request $request){
@@ -52,6 +50,7 @@ class SantriController extends Controller
                 'message'=> 'Data santri gagal dimasukkan'
               ];
         }else{
+            date_default_timezone_set('Asia/Jakarta');
             $santri = new Santri();
             $santri->username     = $request->username;
             $santri->password     = Hash::make($request->password);
@@ -67,7 +66,7 @@ class SantriController extends Controller
             $santri->tingkatan = $request->tingkatan;
             $santri->alamat = $request->alamat;
             $santri->universitas  = '-';
-            $santri->created_at = now();
+            $santri->created_at = Carbon::now();
             if($santri->save()){
                 $semesters = $request->semester_data;
                 foreach($semesters as $semt){
@@ -148,7 +147,9 @@ class SantriController extends Controller
     public function delete($id){
         $santri = Santri::where('id', '=', $id);
         $oldGrupSemt = GrupSemester::where('santri_id', '=', $id);
+        $oldGrupNotif = GrupNotifikasi::where('santri_id', '=', $id);
         $oldGrupSemt->delete();
+        $oldGrupNotif->delete();
         if($santri->delete()){
             $result = [
               'status' => 'success',
@@ -158,6 +159,24 @@ class SantriController extends Controller
             $result = [
               'status' => 'error',
               'message' =>  'Data santri gagal dihapus :('
+            ];
+          }
+          return redirect()->back()->with($result['status'], $result['message']);
+    }
+    public function resetEmail($id){
+        $santri = Santri::where('id', '=', $id)->first();
+        $santri->email = null;
+        $santri->uuid = null;
+        $santri->fcm_token = null;
+        if($santri->save()){
+            $result = [
+              'status' => 'success',
+              'message' =>  'Email santri berhasil direset'
+            ];
+          }else{
+            $result = [
+              'status' => 'error',
+              'message' =>  'Email santri gagal direset :('
             ];
           }
           return redirect()->back()->with($result['status'], $result['message']);

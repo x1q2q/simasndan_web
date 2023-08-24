@@ -12,11 +12,7 @@ use Illuminate\Support\Facades\File;
 class GuruController extends Controller
 {
     public function index(){
-        $table = request()->session()->get('table');
-        $data = array(
-            'nama' => Auth::guard($table)->user()->username,
-            'role' => request()->session()->get('role')
-        );
+        $data = $this->getDataBasics();
         return view('panels.data_guru', $data);
     }
     public function lists(Request $request){

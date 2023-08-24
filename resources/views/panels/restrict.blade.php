@@ -7,7 +7,7 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card p-5">
         <h3>Restricted area!</h3>
-        <p>Status login anda adalah <strong>{{ $from }}</strong>, tidak bisa mengakses fitur/menu ini!</p>
+        <p>Status login anda adalah <strong>{{ $from }}</strong>, anda tidak bisa mengakses fitur menu ini!</p>
         <div>
             <a href="{{ route('login') }}" class="btn btn-danger">Login Kembali</a>
         </div>

@@ -11,6 +11,7 @@ use App\Models\Santri;
 use App\Models\Notifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use \Illuminate\Support\Facades\DB;
 
 class ApiSantriController extends Controller
 {
@@ -109,18 +110,21 @@ class ApiSantriController extends Controller
     public function updateUUID(Request $request, $idSantri)
     {
         $updateFields = [
-            'uuid'      => $request->uuid,
-            'email'     => $request->email,
             'fcm_token' => $request->fcm_token
         ];
+        if($request->email != null && $request->uuid != null){
+            $updateFields['email'] = $request->email;
+            $updateFields['uuid'] = $request->uuid;
+        }
         $santri = Santri::where('id', '=', $idSantri)->first();
         $santri->update($updateFields);
         $response = new SantriResource($santri);
         return response()->json(["data" => $response]);
     }
     public function getNotifikasi($id){
-        $query = Notifikasi::join('grup_notifikasi', 'notifikasi.id', '=', 'grup_notifikasi.notif_id')
-        ->where('grup_notifikasi.santri_id','=',$id)->orderBy('created_at','desc')->get();
+        $query = Notifikasi::select('grup_notifikasi.santri_id', DB::raw('DATE(notifikasi.created_at) as tanggal'))
+        ->join('grup_notifikasi', 'notifikasi.id', '=', 'grup_notifikasi.notif_id')
+        ->where('grup_notifikasi.santri_id','=',$id)->orderBy('created_at','desc')->groupBy('tanggal')->get();
         $response = new NotifikasiCollection($query,NotifikasiResource::class);
         return response()->json($response);
     }

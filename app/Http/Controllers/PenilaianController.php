@@ -10,11 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class PenilaianController extends Controller
 {
     public function index(){
-        $table = request()->session()->get('table');
-        $data = array(
-            'nama' => Auth::guard($table)->user()->username,
-            'role' => request()->session()->get('role')
-        );
+        $data = $this->getDataBasics();
         return view('panels.data_penilaian', $data);
     }
     public function lists(Request $request){

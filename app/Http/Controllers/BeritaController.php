@@ -6,17 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Berita;
 use App\Models\Media;
+use App\Models\Santri;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Carbon;
 
 class BeritaController extends Controller
 {
     public function index(){
-        $table = request()->session()->get('table');
-        $data = array(
-            'nama' => Auth::guard($table)->user()->username,
-            'role' => request()->session()->get('role')
-        );
+        $data = $this->getDataBasics();
         return view('panels.data_berita', $data);
     }
     public function lists(Request $request){
@@ -47,6 +45,7 @@ class BeritaController extends Controller
                 'message'=> 'Data berita gagal dimasukkan'
               ];
         }else{
+            date_default_timezone_set('Asia/Jakarta');
             $hasFile = $request->hasFile('foto');
             $file    = $request->foto;
             $kategori   = $request->kategori_berita;
@@ -56,7 +55,7 @@ class BeritaController extends Controller
             $berita->kategori_berita    = $kategori;
             $berita->isi_berita         = $request->isi_berita;
             $berita->penulis            = $request->penulis;
-            $berita->created_at         = now();  
+            $berita->created_at         = Carbon::now();  
             $berita->save();
             if($hasFile){
                 $fotoName = $this->uploadFile($hasFile,$file,$kategori);
@@ -66,12 +65,23 @@ class BeritaController extends Controller
                 $media->berita_id  = $berita->id;
                 $media->save();
             }
-
+            
             $result = [
                 'status' => 200,
                 'data'   => $request,
-                'message'=> 'Data berita berhasil dimasukkan'
+                'message'=> 'Data berita berhasil dimasukkan '
             ];
+            if($request->kategori_berita == 'jadwal' || $request->kategori_berita == 'pengumuman'){
+                $allSantri = Santri::where('fcm_token','!=',null)->pluck('id')->toArray();
+                $notifsData = [
+                    'judul' => $request->judul_berita,
+                    'pesan'  => 'Ada '.$request->kategori_berita.' terbaru oleh '.$request->penulis,
+                    'tipe'  => $request->kategori_berita,
+                    'selected' => $allSantri,
+                ];
+                $sendNotif = app('App\Http\Controllers\NotifikasiController')->sendNotifications($notifsData);
+                $result['message'] = $result['message']. ' dan notifikasi '.$sendNotif.' dikirimkan';
+            }
         }
 
         return response()->json($result);

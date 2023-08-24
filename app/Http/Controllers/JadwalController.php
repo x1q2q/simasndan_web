@@ -14,13 +14,8 @@ use Illuminate\Support\Carbon;
 
 class JadwalController extends Controller
 {
-    public function index(){
-        
-        $table = request()->session()->get('table');
-        $data = array(
-            'nama' => Auth::guard($table)->user()->username,
-            'role' => request()->session()->get('role')
-        );
+    public function index(){        
+        $data = $this->getDataBasics();
         return view('panels.data_jadwal', $data);
     }
     public function lists(Request $request){
@@ -96,12 +91,19 @@ class JadwalController extends Controller
                     $penilaian->created_at = Carbon::now();
                     $penilaian->save();
                 }
+                $notifsData = [
+                    'judul' => 'Jadwal Kelas '.$request->kegiatan,
+                    'pesan'  => 'Ada jadwal kelas untuk kelas '.$request->kode_kelas.' dimulai pada'. $request->waktu_mulai,
+                    'tipe'  => 'kelas',
+                    'selected' => $dtIdSantri,
+                ];
+                $sendNotif = app('App\Http\Controllers\NotifikasiController')->sendNotifications($notifsData);
             }
 
             $result = [
                 'status' => 200,
                 'data'   => $request,
-                'message'=> 'Data jadwal berhasil dimasukkan'
+                'message'=> 'Data jadwal berhasil dimasukkan & notifikasi '.$sendNotif.' dikirimkan'
             ];
         }
 

@@ -58,6 +58,7 @@
             <th>Judul</th>
             <th>Pesan</th>
             <th>Tipe Notif</th>
+            <th style="width: 25%">Daftar Santri</th>
             <th>Dibuat</th>
             </tr>
         </thead>
@@ -220,6 +221,11 @@
                         return data;
                     }
                 },
+                {
+                    'data': 'santri_data',
+                    'className': "text-center",
+                    'orderable': false,
+                }, 
                 {
                     'data': 'created_at',
                     'className': "text-center",
