@@ -93,7 +93,7 @@ class JadwalController extends Controller
                 }
                 $notifsData = [
                     'judul' => 'Jadwal Kelas '.$request->kegiatan,
-                    'pesan'  => 'Ada jadwal kelas untuk kelas '.$request->kode_kelas.' dimulai pada'. $request->waktu_mulai,
+                    'pesan'  => 'Ada jadwal kelas untuk kelas '.$request->kode_kelas.' dimulai pada '. $request->waktu_mulai,
                     'tipe'  => 'kelas',
                     'selected' => $dtIdSantri,
                 ];
@@ -102,9 +102,13 @@ class JadwalController extends Controller
 
             $result = [
                 'status' => 200,
-                'data'   => $request,
-                'message'=> 'Data jadwal berhasil dimasukkan & notifikasi '.$sendNotif.' dikirimkan'
+                'data'   => $sendNotif
             ];
+            if($sendNotif == 'berhasil'){
+                $result['message'] = 'Data jadwal berhasil dimasukkan & notifikasi berhasil  dikirimkan';
+            }else{
+                $result['message'] = 'Data jadwal berhasil dimasukkan, namun token '.$sendNotif;
+            }
         }
 
         return response()->json($result);

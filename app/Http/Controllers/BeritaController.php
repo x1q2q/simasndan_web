@@ -80,7 +80,12 @@ class BeritaController extends Controller
                     'selected' => $allSantri,
                 ];
                 $sendNotif = app('App\Http\Controllers\NotifikasiController')->sendNotifications($notifsData);
-                $result['message'] = $result['message']. ' dan notifikasi '.$sendNotif.' dikirimkan';
+                
+                if($sendNotif == 'berhasil'){
+                    $result['message'] =  $result['message']. ' & notifikasi berhasil  dikirimkan';
+                }else{
+                    $result['message'] =  $result['message'].' namun token '.$sendNotif;
+                }
             }
         }
 

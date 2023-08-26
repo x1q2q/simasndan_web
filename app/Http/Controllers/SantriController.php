@@ -127,12 +127,14 @@ class SantriController extends Controller
             if($santri->save()){    
                 $oldGrupSemt->delete();            
                 $semesters = $request->semester_data;
-                foreach($semesters as $semt){
-                    $grupSemt = new GrupSemester();
-                    $grupSemt->semester_id = (int)$semt;
-                    $grupSemt->santri_id = $santri->id;
-                    $grupSemt->save();
-                }
+                if($semesters!=null){
+                    foreach($semesters as $semt){
+                        $grupSemt = new GrupSemester();
+                        $grupSemt->semester_id = (int)$semt;
+                        $grupSemt->santri_id = $santri->id;
+                        $grupSemt->save();
+                    }
+                }                
             }
 
             $result = [

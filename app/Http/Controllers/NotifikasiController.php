@@ -68,9 +68,13 @@ class NotifikasiController extends Controller
 
             $result = [
                 'status' => 200,
-                'data'   => $sendNotif,
-                'message'=> 'Data notifikasi berhasil dimasukkan & '.$sendNotif. ' dikirimkan'
+                'data'   => $sendNotif
             ];
+            if($sendNotif == 'berhasil'){
+                $result['message'] = 'Data notifikasi berhasil dimasukkan & notifikasi berhasil  dikirimkan';
+            }else{
+                $result['message'] = 'Data notifikasi berhasil dimasukkan, namun token '.$sendNotif;
+            }
         }
 
         return response()->json($result);
@@ -113,11 +117,11 @@ class NotifikasiController extends Controller
         $newMessage =CloudMessage::new()->withNotification($notification)->withData(['screen' => '/notifikasi-screen']);  
         $report = $this->messaging->sendMulticast($newMessage,$deviceTokens);  
         foreach ($report->unknownTokens() as $unknownToken) {
-            return $unknownToken. " token tidak diketahui";
+            return $unknownToken. " tidak diketahui";
         }
         
         foreach ($report->invalidTokens() as $invalidToken) {
-            return $invalidToken. " token invalid";
+            return $invalidToken. " invalid";
         }
         return "berhasil";
     }
