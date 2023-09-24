@@ -36,8 +36,7 @@ class NotifikasiController extends Controller
             if (!empty($post["s_keyword"])) {
                 $query->where('judul', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
                     ->orWhere('pesan', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
-                    ->orWhere('tipe', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%')
-                    ->orWhere('created_at', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%');
+                    ->orWhere('tipe', 'LIKE', '%' . strtolower($post["s_keyword"]) . '%');
             }})->orderBy('id','desc')->groupBy('notifikasi.id');;
 
         return \DataTables::eloquent($beritaLists)->addIndexColumn()->toJson();
@@ -96,32 +95,40 @@ class NotifikasiController extends Controller
                 $grupNotif->santri_id = (int) $val;
                 $grupNotif->save();
             }
-            $sendNotif = $this->sendToFirebase($data['judul'],$data['pesan'], $santriIds);
+            $notifId = $notifikasi->id;
+            $sendNotif = $this->sendToFirebase($data['judul'], $data['pesan'], $santriIds, $notifId);
         }
         return $sendNotif;
     }
-    public function sendToFirebase($title, $body, $selectedIds){
+    public function sendToFirebase($title, $body, $selectedIds, $notifId){
         $santriFCM = Santri::select('fcm_token')->whereIn('id',$selectedIds)->where('fcm_token', '!=', null)->get()->toArray();
         $deviceTokens = array_map (function($value){
             return $value["fcm_token"];
             }, $santriFCM);
 
-        $imageUrl = 'http://lorempixel.com/400/200/';
-        $notification = Notification::fromArray([
-            'title' => $title,
-            'body' => $body,
-            'image' => $imageUrl,
-        ]);
-        $notification = Notification::create($title, $body);
-
-        $newMessage =CloudMessage::new()->withNotification($notification)->withData(['screen' => '/notifikasi-screen']);  
+        $imageUrl = 'https://simasndan.crissad.com/public/assets/img/uploads/logo-simasndan2.png';
+        $params = [
+            'android_channel_id'    => 'high_importance_channel',
+            'title'                 => $title,
+            'body'                  => $body,
+            'priority'              => 'high',
+            'image'                 => $imageUrl,
+            'screen'                => '/notifikasi-screen',
+            'click_action'          => 'FLUTTER_NOTIFICATION_CLICK',
+            'id'                    => $notifId
+        ];
+        $notification = Notification::fromArray([]);
+        // $notification = Notification::create($title, $body);
+        $newMessage = CloudMessage::new()->withNotification($notification)->withData($params);  
         $report = $this->messaging->sendMulticast($newMessage,$deviceTokens);  
         foreach ($report->unknownTokens() as $unknownToken) {
-            return $unknownToken. " tidak diketahui";
+            $namaSantri = $this->resetToken($unknownToken);
+            return ' '.$namaSantri. " tidak diketahui";
         }
         
         foreach ($report->invalidTokens() as $invalidToken) {
-            return $invalidToken. " invalid";
+            $namaSantri = $this->resetToken($invalidToken);
+            return ' '. $namaSantri. " invalid";
         }
         return "berhasil";
     }
@@ -133,5 +140,16 @@ class NotifikasiController extends Controller
             }, $santri);
         $filteredSantri = Santri::whereIn('id',$santriIds)->where('fcm_token', '!=', null)->pluck('id')->toArray();
         return $filteredSantri;
+    }
+    public function resetToken($token){
+        $namaSantri = "";
+        $santri = Santri::where('fcm_token', '=', $token)->first();
+        $namaSantri = $santri->nama_santri;
+        $santri->email = null;
+        $santri->uuid = null;
+        $santri->fcm_token = null;
+        $santri->save();
+
+        return $namaSantri;
     }
 }

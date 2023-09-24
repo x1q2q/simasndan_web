@@ -195,20 +195,37 @@ class HomeController extends Controller
             'categories' => array()
         ];
 
-        $notifs = Notifikasi::selectRaw('notifikasi.created_at, notifikasi.tipe, count(notifikasi.id) as jml_notif')
+        $datas['categories'] = Notifikasi::selectRaw('DATE(created_at) as tanggal')
             ->join('grup_notifikasi','grup_notifikasi.notif_id','=','notifikasi.id')
-            ->groupBy('notifikasi.id')->orderBy('created_at','desc')->get()->toArray();
+            ->groupBy('tanggal')->orderBy('created_at','desc')->limit(7)->pluck('tanggal')->toArray();
+        
 
-            foreach($notifs as $val){
-                if($val["tipe"] == "pengumuman"){
-                    array_push($datas["val1"],$val["jml_notif"]);
-                }else if($val["tipe"] == "kelas"){
-                    array_push($datas["val2"],$val["jml_notif"]);
-                }else if($val["tipe"] == "jadwal"){
-                    array_push($datas["val3"],$val["jml_notif"]);
-                }
-                array_push($datas['categories'],substr($val["created_at"],0,10));
+        $notifs = Notifikasi::selectRaw('notifikasi.created_at, notifikasi.tipe, DATE(created_at) as tanggal, count(notifikasi.id) as jml_notif')
+        ->join('grup_notifikasi','grup_notifikasi.notif_id','=','notifikasi.id')
+        ->groupBy('notifikasi.id')->orderBy('created_at','desc')->get()->toArray();
+         
+
+        foreach($datas["categories"] as $val){
+            $newFiltered = array_filter($notifs, function ($var, $k) use ($val) {
+                return ($var['tanggal'] == $val);
+            },ARRAY_FILTER_USE_BOTH );
+
+            $arrPengumuman = [];
+            $arrJadwal = [];
+            $arrKelas = [];
+            foreach($newFiltered as $newF){
+                if($newF['tipe'] == 'pengumuman'){
+                  array_push($arrPengumuman, (int) $newF['jml_notif']);
+                }else if($newF['tipe'] == 'kelas'){
+                    array_push($arrKelas, (int) $newF['jml_notif']);
+                }else if($newF['tipe'] == 'jadwal'){
+                    array_push($arrJadwal, (int) $newF['jml_notif']);
+                 }
             }
+            array_push($datas["val1"],array_sum($arrPengumuman));
+            array_push($datas["val2"],array_sum($arrKelas));
+            array_push($datas["val3"],array_sum($arrJadwal));
+        }
         
         return $datas;
     }
