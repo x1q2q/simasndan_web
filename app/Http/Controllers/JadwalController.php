@@ -9,6 +9,7 @@ use App\Models\Kelas;
 use App\Models\Materi;
 use App\Models\Penilaian;
 use App\Models\Semester;
+use App\Models\Santri;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 
@@ -78,6 +79,8 @@ class JadwalController extends Controller
                 $dtIdSantri = array_map (function($value){
                     return $value['santri_id'];
                     }, $kelas);
+                
+                $dtIdFiltered = Santri::where('fcm_token','!=',null)->whereIn('id',$dtIdSantri)->pluck('id')->toArray();
                     
                 foreach($dtIdSantri as $santriVal){
                     $penilaian = new Penilaian();
@@ -95,7 +98,7 @@ class JadwalController extends Controller
                     'judul' => 'Jadwal Kelas '.$request->kegiatan,
                     'pesan'  => 'Ada jadwal kelas untuk kelas '.$request->kode_kelas.' dimulai pada '. $request->waktu_mulai,
                     'tipe'  => 'kelas',
-                    'selected' => $dtIdSantri,
+                    'selected' => $dtIdFiltered,
                 ];
                 $sendNotif = app('App\Http\Controllers\NotifikasiController')->sendNotifications($notifsData);
             }

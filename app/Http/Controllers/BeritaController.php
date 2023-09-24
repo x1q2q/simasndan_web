@@ -49,13 +49,13 @@ class BeritaController extends Controller
             $hasFile = $request->hasFile('foto');
             $file    = $request->foto;
             $kategori   = $request->kategori_berita;
-            
+
             $berita = new Berita();
             $berita->judul_berita       = $request->judul_berita;
             $berita->kategori_berita    = $kategori;
             $berita->isi_berita         = $request->isi_berita;
             $berita->penulis            = $request->penulis;
-            $berita->created_at         = Carbon::now();  
+            $berita->created_at         = Carbon::now();
             $berita->save();
             if($hasFile){
                 $fotoName = $this->uploadFile($hasFile,$file,$kategori);
@@ -65,7 +65,7 @@ class BeritaController extends Controller
                 $media->berita_id  = $berita->id;
                 $media->save();
             }
-            
+
             $result = [
                 'status' => 200,
                 'data'   => $request,
@@ -80,7 +80,7 @@ class BeritaController extends Controller
                     'selected' => $allSantri,
                 ];
                 $sendNotif = app('App\Http\Controllers\NotifikasiController')->sendNotifications($notifsData);
-                
+
                 if($sendNotif == 'berhasil'){
                     $result['message'] =  $result['message']. ' & notifikasi berhasil  dikirimkan';
                 }else{
@@ -120,7 +120,7 @@ class BeritaController extends Controller
             $berita->judul_berita   = $request->judul_berita;
             $berita->kategori_berita    = $kategori;
             $berita->isi_berita = $request->isi_berita;
-            $berita->penulis     = $request->penulis;       
+            $berita->penulis     = $request->penulis;
             $berita->save();
             if($hasFile){
                 $fotoName = $this->uploadFile($hasFile,$file,$kategori);
@@ -131,7 +131,6 @@ class BeritaController extends Controller
                 $media->berita_id = $id;
                 $media->type_media = 'gambar';
                 $media->nama       = $fotoName;
-                $media->ekstensi   = $file->getClientOriginalExtension();
                 $media->save();
             }
 
